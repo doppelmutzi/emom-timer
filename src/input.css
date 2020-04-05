@@ -1,0 +1,9 @@
+.input-container {
+  display: flex;
+  flex-direction: row;
+  color: red;
+}
+
+.input-container > label {
+  padding-right: 10px;
+}

@@ -1,0 +1,15 @@
+.exercises-container > * + * {
+  margin-top: 10px;
+}
+.exercises-container button {
+  display: block;
+}
+
+.exercise-set {
+  display: flex;
+  flex-direction: row;
+}
+
+.exercise-set > * + * {
+  margin-left: 10px;
+}
