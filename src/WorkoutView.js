@@ -9,8 +9,9 @@ const WorkoutView = () => {
   const [playback, setPlayback] = useState();
   const [currentTimerIndex, setCurrentTimerIndex] = useState(0);
 
-  // TODO useCallback https://reacttraining.com/blog/when-to-use-functions-in-hooks-dependency-array/
-
+  // https://stackoverflow.com/questions/55045566/react-hooks-usecallback-causes-child-to-re-render/55047178#55047178
+  // https://stackoverflow.com/questions/54932674/trouble-with-simple-example-of-react-hooks-usecallback
+  // https://codesandbox.io/s/l4oqzp5z1q?fontsize=14&file=/src/index.js
   return (
     <div>
       <Timer
@@ -18,12 +19,19 @@ const WorkoutView = () => {
         countInSec={settings.emomTimeInSec}
         playback={playback}
         onComplete={() => {
-          play("Workout complete");
+          play("Workout complete. Have a nice day.");
         }}
+        play={play}
       />
+
       {settings.minutes.map((minute, index) => {
         const nextMinuteAvailable = index + 1 <= settings.minutes.length - 1;
+        const labelNextMinute =
+          nextMinuteAvailable && settings.minutes[index + 1].label;
         const restInSec = minute.unit === UNIT.SECONDS ? 60 - minute.amount : 0;
+
+        // TODO React.memo für Timer ?
+
         return (
           index === currentTimerIndex && (
             <div key={index}>
@@ -32,21 +40,20 @@ const WorkoutView = () => {
               )}
               <Timer
                 label={`min ${index + 1}: ${minute.label}`}
-                countInSec={minute.unit === UNIT.SECONDS ? minute.amount : 60}
-                restInSec={restInSec}
-                playback={playback}
-                onStart={() => {
-                  console.log("onStart()", minute);
-                  play(`Current workout ${minute.label}`);
+                onStart={() => play(`Start ${minute.label}`)}
+                onNearComplete={() => {
+                  nextMinuteAvailable && play(`Next up ${labelNextMinute}`);
                 }}
                 onComplete={() => {
-                  console.log("onComplete()", index);
-                  const nextMinuteAvailable =
-                    index + 1 <= settings.minutes.length - 1;
-                  nextMinuteAvailable &&
-                    play(`Next up: ${settings.minutes[index + 1].label}`);
-                  setCurrentTimerIndex(index + 1);
+                  index < settings.minutes.length - 1 &&
+                    setCurrentTimerIndex(i => i + 1);
                 }}
+                countInSec={minute.unit === UNIT.SECONDS ? minute.amount : 60}
+                restInSec={restInSec}
+                onRest={() => {
+                  restInSec > 0 && play("rest");
+                }}
+                playback={playback}
               />
             </div>
           )
@@ -54,17 +61,21 @@ const WorkoutView = () => {
       })}
       <button
         onClick={() => {
-          if (playback === "stop") {
-            setPlayback("play");
-          } else {
-            setPlayback("stop");
-          }
+          setPlayback("play");
         }}
       >
-        {!playback || playback === "stop" ? "starten" : "stop"}
+        start
       </button>
       <button
         onClick={() => {
+          setPlayback("stop");
+        }}
+      >
+        stop
+      </button>
+      <button
+        onClick={() => {
+          setCurrentTimerIndex(0);
           setPlayback("reset");
         }}
       >

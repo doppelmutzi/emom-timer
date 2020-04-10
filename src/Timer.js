@@ -1,85 +1,86 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import SettingsContext from "./SettingsContext";
-
-function usePrevious(value) {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-  return ref.current;
-}
+import React, { useEffect, useRef, useState } from "react";
 
 const Timer = ({
   countInSec,
   restInSec = 0,
-  label = "",
-  playback,
+  label,
   onStart = () => {},
-  onComplete = () => {}
+  onNearComplete = () => {},
+  onComplete = () => {},
+  onRest = () => {},
+  playback
 }) => {
-  const { play } = useContext(SettingsContext);
-  const countdownRef = useRef(countInSec * 1000);
-  const [countdown, setCountdown] = useState(() => countInSec * 1000);
-  const [isActive, setIsActive] = useState(false);
-  const [rest, setRest] = useState(() =>
-    restInSec && restInSec > 0 ? true : false
-  );
-  const [workoutLabel, setWorkoutLabel] = useState(label);
+  const intervalRef = useRef(1000);
+  const restRef = useRef(restInSec * intervalRef.current);
+  const initialCountRef = useRef(countInSec * intervalRef.current);
 
-  const prevCountdown = usePrevious(countdown);
+  const [count, setCount] = useState(initialCountRef.current);
 
   useEffect(() => {
-    console.log("useEffect [playback]");
-    function reset() {
-      setCountdown(countdownRef.current);
-      setIsActive(false);
-    }
+    initialCountRef.current = countInSec * intervalRef.current;
+  }, [countInSec]);
 
-    function togglePlayPause() {
-      setIsActive(!isActive);
-    }
+  const onStartRef = useRef();
 
-    if (prevCountdown === countdownRef.current) {
-      onStart();
-    }
+  useEffect(() => {
+    console.log("useEffect onStart");
+    onStartRef.current = onStart;
+  }, [onStart]);
+
+  const onRestRef = useRef();
+
+  useEffect(() => {
+    console.log("useEffect onRest");
+    onRestRef.current = onRest;
+  }, [onRest]);
+
+  const onCompletetRef = useRef();
+
+  useEffect(() => {
+    console.log("useEffect onComplete");
+    onCompletetRef.current = onComplete;
+  }, [onComplete]);
+
+  const onNearCompletetRef = useRef();
+
+  useEffect(() => {
+    console.log("useEffect onNearComplete");
+    onNearCompletetRef.current = onNearComplete;
+  }, [onNearComplete]);
+
+  useEffect(() => {
     if (playback === "play") {
-      togglePlayPause();
-    } else if (playback === "stop") {
-      togglePlayPause();
-    } else {
-      reset();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playback]);
-
-  useEffect(() => {
-    console.log("useEffect2");
-    let timeout = null;
-
-    if (isActive) {
-      timeout = setTimeout(() => {
-        setCountdown(current => current - 1000);
-      }, 1000);
-    }
-    if (countdown === 0) {
-      if (rest) {
-        setCountdown(countdownRef.current);
-        setRest(false);
-        setWorkoutLabel("rest");
-        play("rest");
-      } else {
-        clearTimeout(timeout);
-        onComplete();
+      if (count === initialCountRef.current && onStartRef.current) {
+        onStartRef.current();
+        onStartRef.current = null;
       }
+      const id = setInterval(() => {
+        setCount(c => c - intervalRef.current);
+      }, intervalRef.current);
+      if (restRef.current === 0 && count === 3 * intervalRef.current) {
+        onNearCompletetRef.current();
+      }
+      if (count === 0) {
+        if (restRef.current > 0) {
+          onRestRef.current();
+          setCount(restRef.current);
+          restRef.current = 0;
+        } else {
+          onCompletetRef.current();
+          clearInterval(id);
+        }
+      }
+      return () => clearInterval(id);
+    } else if (playback === "reset") {
+      setCount(initialCountRef.current);
     }
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [countdown, rest, isActive]);
+  }, [playback, count]);
 
-  return <div>{`${workoutLabel} ${countdown / 1000} Sekunden`}</div>;
+  return (
+    <div>
+      {label}: {count / intervalRef.current}
+    </div>
+  );
 };
-
-// https://github.com/facebook/react/issues/14010
 
 export default Timer;

@@ -24,7 +24,7 @@ function App() {
     return synth.getVoices();
   });
 
-  const play = (text = "hello again") => {
+  const play = text => {
     const { voiceIndex: index } = settings;
     utterance.voice = voices[index];
     utterance.text = text;

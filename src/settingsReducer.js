@@ -32,9 +32,20 @@ export const UNIT = {
 
 export const getInitialSettings = () => {
   return {
-    editMode: true,
+    editMode: false,
     voiceIndex: 10,
-    emomTimeInSec: 0,
-    minutes: []
+    emomTimeInSec: 120,
+    minutes: [
+      {
+        label: "Burpees",
+        amount: 10,
+        unit: UNIT.SECONDS
+      },
+      {
+        label: "Froggers",
+        amount: 20,
+        unit: UNIT.SECONDS
+      }
+    ]
   };
 };
