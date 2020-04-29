@@ -27,7 +27,8 @@ export default (state, action) => {
 
 export const UNIT = {
   COUNT: "count",
-  SECONDS: "seconds"
+  SECONDS: "seconds",
+  REST: "rest"
 };
 
 export const getInitialSettings = () => {

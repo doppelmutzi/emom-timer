@@ -1,0 +1,8 @@
+.l-horizontal {
+  display: flex;
+  align-items: center;
+}
+
+.l-horizontal > * + * {
+  margin-left: 10px;
+}
