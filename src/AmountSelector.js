@@ -12,8 +12,8 @@ const AmountSelector = ({ onChange }) => {
         onChange(value);
       }}
     >
-      <option value={UNIT.COUNT}>Anzahl</option>
-      <option value={UNIT.SECONDS}>Sekunden</option>
+      <option value={UNIT.COUNT}>For reps</option>
+      <option value={UNIT.SECONDS}>For time</option>
     </select>
   );
 };

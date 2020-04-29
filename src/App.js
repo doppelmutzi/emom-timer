@@ -37,7 +37,6 @@ function App() {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           {settings.editMode ? <EditView /> : <WorkoutView />}
-          <SwitchModeButton />
         </header>
       </div>
     </SettingsContext.Provider>

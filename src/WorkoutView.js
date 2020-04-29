@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useState } from "react";
 
 import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
@@ -8,6 +8,7 @@ const WorkoutView = () => {
   const { settings, play } = useContext(SettingsContext);
   const [playback, setPlayback] = useState();
   const [currentTimerIndex, setCurrentTimerIndex] = useState(0);
+  const { dispatch } = useContext(SettingsContext);
 
   // https://stackoverflow.com/questions/55045566/react-hooks-usecallback-causes-child-to-re-render/55047178#55047178
   // https://stackoverflow.com/questions/54932674/trouble-with-simple-example-of-react-hooks-usecallback
@@ -59,27 +60,36 @@ const WorkoutView = () => {
           )
         );
       })}
+      <div>
+        <button
+          onClick={() => {
+            setPlayback("play");
+          }}
+        >
+          start
+        </button>
+        <button
+          onClick={() => {
+            setPlayback("stop");
+          }}
+        >
+          stop
+        </button>
+        <button
+          onClick={() => {
+            setCurrentTimerIndex(0);
+            setPlayback("reset");
+          }}
+        >
+          reset
+        </button>
+      </div>
       <button
         onClick={() => {
-          setPlayback("play");
+          dispatch({ type: "SET_MODE", editMode: true });
         }}
       >
-        start
-      </button>
-      <button
-        onClick={() => {
-          setPlayback("stop");
-        }}
-      >
-        stop
-      </button>
-      <button
-        onClick={() => {
-          setCurrentTimerIndex(0);
-          setPlayback("reset");
-        }}
-      >
-        reset
+        Create new timer
       </button>
     </div>
   );
