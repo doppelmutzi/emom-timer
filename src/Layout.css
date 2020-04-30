@@ -6,3 +6,7 @@
 .l-horizontal > * + * {
   margin-left: 10px;
 }
+
+.l-vertical > * + * {
+  margin-top: 10px;
+}

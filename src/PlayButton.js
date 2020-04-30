@@ -1,15 +1,17 @@
 import React, { useContext } from "react";
 import SettingsContext from "./SettingsContext";
+import "./Button.css";
 
-const PlayButton = () => {
+const PlayButton = ({ textToPlay }) => {
   const { play } = useContext(SettingsContext);
   return (
     <button
+      className="preview-button"
       onClick={() => {
-        play();
+        play(textToPlay);
       }}
     >
-      play
+      preview
     </button>
   );
 };

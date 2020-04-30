@@ -1,16 +1,14 @@
 import React from "react";
 
 import VoicesDropdown from "./VoicesDropdown";
-import PlayButton from "./PlayButton";
 import ExcerciseConfigurator from "./ExcercisesConfigurator";
-
+import { VerticalContainer } from "./Layout";
 const EditView = () => {
   return (
-    <div>
+    <VerticalContainer>
       <VoicesDropdown />
-      <PlayButton />
       <ExcerciseConfigurator />
-    </div>
+    </VerticalContainer>
   );
 };
 
