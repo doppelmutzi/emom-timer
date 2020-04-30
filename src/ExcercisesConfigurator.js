@@ -7,7 +7,7 @@ import { UNIT } from "./settingsReducer";
 import { HorizontalContainer } from "./Layout";
 
 export default function ExcercisesConfigurator() {
-  const { dispatch } = useContext(SettingsContext);
+  const { dispatch, settings } = useContext(SettingsContext);
   const [timerType, setTimerType] = useState("emom");
   const [emomTimeInSec, setEmomTimeInSec] = useState(0);
   const [rounds, setRounds] = useState(0);
@@ -112,31 +112,51 @@ export default function ExcercisesConfigurator() {
           )}
         </div>
       ))}
-      <button
-        disabled={
-          minutes.length === 0 ||
-          (timerType === "emom" && emomTimeInSec <= 0) ||
-          (timerType !== "emom" && rounds <= 0) ||
-          !allValid
-        }
-        onClick={() => {
-          const emom =
-            timerType === "emom"
-              ? parseInt(emomTimeInSec)
-              : parseInt(rounds) * minutes.length * 60;
-          const overallMinutes = getOverallMinutes(minutes, emom);
-          dispatch({ type: "SET_EMOM_TIME", emomTimeInSec: emom });
-          dispatch({
-            type: "SET_MINUTES",
-            minutes: overallMinutes
-          });
-          dispatch({ type: "SET_MODE", editMode: false });
-        }}
-      >
-        Save timer
-      </button>
+      <HorizontalContainer>
+        <button
+          disabled={isDisabled()}
+          onClick={() => {
+            updateState();
+            const key = prompt("What's the name of the template?");
+            localStorage.setItem(key, JSON.stringify(settings));
+          }}
+        >
+          Save timer
+        </button>
+        <button
+          disabled={isDisabled()}
+          onClick={() => {
+            updateState();
+            dispatch({ type: "SET_MODE", editMode: false });
+          }}
+        >
+          Go to workout
+        </button>
+      </HorizontalContainer>
     </div>
   );
+
+  function updateState() {
+    const emom =
+      timerType === "emom"
+        ? parseInt(emomTimeInSec)
+        : parseInt(rounds) * minutes.length * 60;
+    const overallMinutes = getOverallMinutes(minutes, emom);
+    dispatch({ type: "SET_EMOM_TIME", emomTimeInSec: emom });
+    dispatch({
+      type: "SET_MINUTES",
+      minutes: overallMinutes
+    });
+  }
+
+  function isDisabled() {
+    return (
+      minutes.length === 0 ||
+      (timerType === "emom" && emomTimeInSec <= 0) ||
+      (timerType !== "emom" && rounds <= 0) ||
+      !allValid
+    );
+  }
 
   function checkInput() {
     const invalid = minutes.filter(minute => minute.valid === false);
