@@ -23,28 +23,28 @@ const Timer = ({
   const onStartRef = useRef();
 
   useEffect(() => {
-    console.log("useEffect onStart");
+    // console.log("useEffect onStart");
     onStartRef.current = onStart;
   }, [onStart]);
 
   const onRestRef = useRef();
 
   useEffect(() => {
-    console.log("useEffect onRest");
+    // console.log("useEffect onRest");
     onRestRef.current = onRest;
   }, [onRest]);
 
   const onCompletetRef = useRef();
 
   useEffect(() => {
-    console.log("useEffect onComplete");
+    // console.log("useEffect onComplete");
     onCompletetRef.current = onComplete;
   }, [onComplete]);
 
   const onNearCompletetRef = useRef();
 
   useEffect(() => {
-    console.log("useEffect onNearComplete");
+    // console.log("useEffect onNearComplete");
     onNearCompletetRef.current = onNearComplete;
   }, [onNearComplete]);
 

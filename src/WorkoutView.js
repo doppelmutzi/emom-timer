@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
@@ -7,8 +7,19 @@ import { UNIT } from "./settingsReducer";
 const WorkoutView = () => {
   const { settings, play } = useContext(SettingsContext);
   const [playback, setPlayback] = useState();
+  const [overallMinutes, setOverallMinutes] = useState([]);
   const [currentTimerIndex, setCurrentTimerIndex] = useState(0);
   const { dispatch } = useContext(SettingsContext);
+
+  useEffect(() => {
+    if (!settings.editMode) {
+      const overallMinutes = getOverallMinutes(
+        settings.minutes,
+        settings.emomTimeInSec
+      );
+      setOverallMinutes(overallMinutes);
+    }
+  }, [settings.editMode]);
 
   // https://stackoverflow.com/questions/55045566/react-hooks-usecallback-causes-child-to-re-render/55047178#55047178
   // https://stackoverflow.com/questions/54932674/trouble-with-simple-example-of-react-hooks-usecallback
@@ -25,7 +36,7 @@ const WorkoutView = () => {
         play={play}
       />
 
-      {settings.minutes.map((minute, index) => {
+      {overallMinutes.map((minute, index) => {
         const nextMinuteAvailable = index + 1 <= settings.minutes.length - 1;
         const labelNextMinute =
           nextMinuteAvailable && settings.minutes[index + 1].label;
@@ -86,7 +97,7 @@ const WorkoutView = () => {
       </div>
       <button
         onClick={() => {
-          dispatch({ type: "SET_MODE", editMode: true });
+          dispatch({ type: "RESET" });
         }}
       >
         Create new timer
@@ -94,5 +105,15 @@ const WorkoutView = () => {
     </div>
   );
 };
+
+function getOverallMinutes(minutes, emomTimeInSec) {
+  const numberRounds =
+    Math.floor(parseInt(emomTimeInSec) / 60) / minutes.length;
+  let overallMinutes = [];
+  for (let i = 1; i <= numberRounds; i++) {
+    overallMinutes = [...overallMinutes, ...minutes];
+  }
+  return overallMinutes;
+}
 
 export default WorkoutView;

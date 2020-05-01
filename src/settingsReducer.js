@@ -1,24 +1,45 @@
 export default (state, action) => {
   switch (action.type) {
+    case "RESET":
+      return getInitialSettings();
     case "SET_MODE":
       return {
         ...state,
         editMode: action.editMode
+      };
+    case "SET_DIRTY":
+      return {
+        ...state,
+        dirty: action.dirty
       };
     case "CHANGE_VOICE":
       return {
         ...state,
         voiceIndex: action.index
       };
+    case "SET_TIMER_TYPE":
+      return {
+        ...state,
+        timerType: action.timerType
+      };
     case "SET_EMOM_TIME":
       return {
         ...state,
         emomTimeInSec: action.emomTimeInSec
       };
+    case "SET_ROUNDS":
+      return {
+        ...state,
+        rounds: action.rounds
+      };
     case "SET_MINUTES":
       return {
         ...state,
         minutes: [...action.minutes]
+      };
+    case "LOAD_TEMPLATE":
+      return {
+        ...action.template
       };
     default:
       return state;
@@ -31,22 +52,14 @@ export const UNIT = {
   REST: "rest"
 };
 
-export const getInitialSettings = () => {
+export function getInitialSettings() {
   return {
-    editMode: false,
-    voiceIndex: 10,
-    emomTimeInSec: 120,
-    minutes: [
-      {
-        label: "Burpees",
-        amount: 10,
-        unit: UNIT.SECONDS
-      },
-      {
-        label: "Froggers",
-        amount: 20,
-        unit: UNIT.SECONDS
-      }
-    ]
+    editMode: true,
+    dirty: true,
+    voiceIndex: 0,
+    timerType: "emom",
+    emomTimeInSec: 0,
+    rounds: 0,
+    minutes: []
   };
-};
+}

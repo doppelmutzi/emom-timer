@@ -1,26 +1,24 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import UtteranceInput from "./UtteranceInput";
 import SettingsContext from "./SettingsContext";
 import "./exercises.css";
-import AmountSelector from "./AmountSelector";
 import { UNIT } from "./settingsReducer";
 import { HorizontalContainer } from "./Layout";
+import TemplatesDropdown from "./TemplatesDropdown";
 
 export default function ExcercisesConfigurator() {
   const { dispatch, settings } = useContext(SettingsContext);
-  const [timerType, setTimerType] = useState("emom");
-  const [emomTimeInSec, setEmomTimeInSec] = useState(0);
-  const [rounds, setRounds] = useState(0);
-  const [minutes, setMinutes] = useState([]);
-  const [allValid, setAllValid] = useState(true);
+  const { timerType, emomTimeInSec, rounds, minutes, dirty } = settings;
+
   return (
     <div className="exercises-container">
+      <TemplatesDropdown />
       <HorizontalContainer>
         <select
           value={timerType}
           onChange={evt => {
-            const type = evt.target.value;
-            setTimerType(type);
+            const timerType = evt.target.value;
+            dispatch({ type: "SET_TIMER_TYPE", timerType });
           }}
         >
           <option value="emom">EMOM</option>
@@ -28,23 +26,29 @@ export default function ExcercisesConfigurator() {
         </select>
         {timerType === "emom" ? (
           <UtteranceInput
+            value={emomTimeInSec / 60}
             label="Overall workout time"
             placeholder="in minutes"
             type="number"
-            onChange={timeInMinutes => setEmomTimeInSec(timeInMinutes * 60)}
+            onChange={timeInMinutes =>
+              dispatch({
+                type: "SET_EMOM_TIME",
+                emomTimeInSec: timeInMinutes * 60
+              })
+            }
           />
         ) : (
           <UtteranceInput
             label="Number repetitions of minutes"
             type="number"
-            onChange={rounds => setRounds(rounds)}
+            onChange={rounds => dispatch({ type: "SET_ROUNDS", rounds })}
           />
         )}
       </HorizontalContainer>
       <HorizontalContainer>
         <button
           onClick={() => {
-            setAllValid(false);
+            dispatch({ type: "SET_DIRTY", dirty: true });
             addMinute({ label: "", unit: UNIT.COUNT, valid: false });
           }}
         >
@@ -52,7 +56,7 @@ export default function ExcercisesConfigurator() {
         </button>
         <button
           onClick={() => {
-            setAllValid(false);
+            dispatch({ type: "SET_DIRTY", dirty: true });
             addMinute({
               label: "",
               amount: 30,
@@ -71,47 +75,49 @@ export default function ExcercisesConfigurator() {
           add 1 min rest
         </button>
       </HorizontalContainer>
-      {minutes.map((minute, i) => (
-        <div key={i} className="exercise-set l-horizontal">
-          {minute.unit === UNIT.REST ? (
-            <>
-              <span>Minute {i + 1}</span>
-              <div>1 minute rest</div>
-            </>
-          ) : (
-            <>
-              <span>Minute {i + 1}</span>
-              <UtteranceInput
-                label="Exercises"
-                value={minute.label}
-                type="text"
-                onChange={label => {
-                  if (label !== "") {
-                    minute.label = label;
-                    minute.valid = true;
-                    checkInput();
-                  }
-                }}
-              />
-              {minute.unit === UNIT.SECONDS && (
+      {minutes.map((minute, i) => {
+        return (
+          <div key={i} className="exercise-set l-horizontal">
+            {minute.unit === UNIT.REST ? (
+              <>
+                <span>Minute {i + 1}</span>
+                <div>1 minute rest</div>
+              </>
+            ) : (
+              <>
+                <span>Minute {i + 1}</span>
                 <UtteranceInput
-                  label="Work"
-                  value={minute.amount}
-                  placeholder="number seconds"
-                  type="number"
-                  onChange={amount => {
-                    if (amount > 0) {
-                      minute.amount = amount;
+                  label="Exercises"
+                  value={minute.label}
+                  type="text"
+                  onChange={label => {
+                    if (label !== "") {
+                      minute.label = label;
                       minute.valid = true;
                       checkInput();
                     }
                   }}
                 />
-              )}
-            </>
-          )}
-        </div>
-      ))}
+                {minute.unit === UNIT.SECONDS && (
+                  <UtteranceInput
+                    label="Work"
+                    value={minute.amount}
+                    placeholder="number seconds"
+                    type="number"
+                    onChange={amount => {
+                      if (amount > 0) {
+                        minute.amount = amount;
+                        minute.valid = true;
+                        checkInput();
+                      }
+                    }}
+                  />
+                )}
+              </>
+            )}
+          </div>
+        );
+      })}
       <HorizontalContainer>
         <button
           disabled={isDisabled()}
@@ -137,16 +143,12 @@ export default function ExcercisesConfigurator() {
   );
 
   function updateState() {
+    // TODO nötig?
     const emom =
       timerType === "emom"
         ? parseInt(emomTimeInSec)
         : parseInt(rounds) * minutes.length * 60;
-    const overallMinutes = getOverallMinutes(minutes, emom);
     dispatch({ type: "SET_EMOM_TIME", emomTimeInSec: emom });
-    dispatch({
-      type: "SET_MINUTES",
-      minutes: overallMinutes
-    });
   }
 
   function isDisabled() {
@@ -154,27 +156,17 @@ export default function ExcercisesConfigurator() {
       minutes.length === 0 ||
       (timerType === "emom" && emomTimeInSec <= 0) ||
       (timerType !== "emom" && rounds <= 0) ||
-      !allValid
+      dirty
     );
   }
 
   function checkInput() {
     const invalid = minutes.filter(minute => minute.valid === false);
-    if (invalid.length > 0) setAllValid(false);
-    else setAllValid(true);
-  }
-
-  function getOverallMinutes(minutes, emomTimeInSec) {
-    const numberRounds =
-      Math.floor(parseInt(emomTimeInSec) / 60) / minutes.length;
-    let overallMinutes = [];
-    for (let i = 1; i <= numberRounds; i++) {
-      overallMinutes = [...overallMinutes, ...minutes];
-    }
-    return overallMinutes;
+    if (invalid.length > 0) dispatch({ type: "SET_DIRTY", dirty: true });
+    else dispatch({ type: "SET_DIRTY", dirty: false });
   }
 
   function addMinute(minute) {
-    setMinutes([...minutes, minute]);
+    dispatch({ type: "SET_MINUTES", minutes: [...minutes, minute] });
   }
 }

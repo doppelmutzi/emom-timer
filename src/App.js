@@ -3,7 +3,6 @@ import logo from "./logo.svg";
 import "./App.css";
 import SettingsContext from "./SettingsContext";
 import settingsReducer, { getInitialSettings } from "./settingsReducer";
-import SwitchModeButton from "./SwitchModeButton";
 import EditView from "./EditView";
 import WorkoutView from "./WorkoutView";
 
