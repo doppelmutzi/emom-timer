@@ -1,16 +1,40 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import UtteranceInput from "./UtteranceInput";
 import SettingsContext from "./SettingsContext";
 import "./exercises.css";
 import { UNIT } from "./settingsReducer";
 import { HorizontalContainer } from "./Layout";
 import TemplatesDropdown from "./TemplatesDropdown";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+
+// A custom hook that builds on useLocation to parse
+// the query string for you.
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export default function ExcercisesConfigurator() {
   const { dispatch, settings } = useContext(SettingsContext);
   const { timerType, emomTimeInSec, rounds, minutes, dirty } = settings;
   const history = useHistory();
+  let query = useQuery();
+  const template = query.get("template");
+
+  useEffect(() => {
+    if (template) {
+      const templateStringified = decodeURI(template);
+      console.log("template", templateStringified);
+      try {
+        const json = JSON.parse(templateStringified);
+        dispatch({
+          type: "LOAD_TEMPLATE",
+          template: json
+        });
+      } catch (error) {
+        // illegal template
+      }
+    }
+  }, [template]);
 
   return (
     <div className="exercises-container">
@@ -130,6 +154,15 @@ export default function ExcercisesConfigurator() {
           }}
         >
           Save timer
+        </button>
+        <button
+          onClick={() => {
+            const encodedSettings = encodeURI(JSON.stringify(settings));
+            const url = `http://localhost:3000/?template=${encodedSettings}`;
+            prompt("Copy to clipboard: Ctrl+C, Enter", url);
+          }}
+        >
+          share
         </button>
         <button
           disabled={isDisabled()}
