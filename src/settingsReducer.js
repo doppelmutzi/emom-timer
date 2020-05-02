@@ -2,11 +2,6 @@ export default (state, action) => {
   switch (action.type) {
     case "RESET":
       return getInitialSettings();
-    case "SET_MODE":
-      return {
-        ...state,
-        editMode: action.editMode
-      };
     case "SET_DIRTY":
       return {
         ...state,
@@ -54,7 +49,6 @@ export const UNIT = {
 
 export function getInitialSettings() {
   return {
-    editMode: true,
     dirty: true,
     voiceIndex: 0,
     timerType: "emom",

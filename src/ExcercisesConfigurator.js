@@ -5,10 +5,12 @@ import "./exercises.css";
 import { UNIT } from "./settingsReducer";
 import { HorizontalContainer } from "./Layout";
 import TemplatesDropdown from "./TemplatesDropdown";
+import { useHistory } from "react-router-dom";
 
 export default function ExcercisesConfigurator() {
   const { dispatch, settings } = useContext(SettingsContext);
   const { timerType, emomTimeInSec, rounds, minutes, dirty } = settings;
+  const history = useHistory();
 
   return (
     <div className="exercises-container">
@@ -133,7 +135,7 @@ export default function ExcercisesConfigurator() {
           disabled={isDisabled()}
           onClick={() => {
             updateState();
-            dispatch({ type: "SET_MODE", editMode: false });
+            history.push("/workout");
           }}
         >
           Go to workout
@@ -143,7 +145,6 @@ export default function ExcercisesConfigurator() {
   );
 
   function updateState() {
-    // TODO nötig?
     const emom =
       timerType === "emom"
         ? parseInt(emomTimeInSec)

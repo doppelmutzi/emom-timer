@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
@@ -10,16 +11,15 @@ const WorkoutView = () => {
   const [overallMinutes, setOverallMinutes] = useState([]);
   const [currentTimerIndex, setCurrentTimerIndex] = useState(0);
   const { dispatch } = useContext(SettingsContext);
+  const history = useHistory();
 
   useEffect(() => {
-    if (!settings.editMode) {
-      const overallMinutes = getOverallMinutes(
-        settings.minutes,
-        settings.emomTimeInSec
-      );
-      setOverallMinutes(overallMinutes);
-    }
-  }, [settings.editMode]);
+    const overallMinutes = getOverallMinutes(
+      settings.minutes,
+      settings.emomTimeInSec
+    );
+    setOverallMinutes(overallMinutes);
+  }, [settings.minutes, settings.emomTimeInSec]);
 
   // https://stackoverflow.com/questions/55045566/react-hooks-usecallback-causes-child-to-re-render/55047178#55047178
   // https://stackoverflow.com/questions/54932674/trouble-with-simple-example-of-react-hooks-usecallback
@@ -98,6 +98,7 @@ const WorkoutView = () => {
       <button
         onClick={() => {
           dispatch({ type: "RESET" });
+          history.push("/");
         }}
       >
         Create new timer

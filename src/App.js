@@ -5,6 +5,7 @@ import SettingsContext from "./SettingsContext";
 import settingsReducer, { getInitialSettings } from "./settingsReducer";
 import EditView from "./EditView";
 import WorkoutView from "./WorkoutView";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
   const synth = window.speechSynthesis;
@@ -35,7 +36,16 @@ function App() {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          {settings.editMode ? <EditView /> : <WorkoutView />}
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <EditView />
+              </Route>
+              <Route path="/workout">
+                <WorkoutView />
+              </Route>
+            </Switch>
+          </Router>
         </header>
       </div>
     </SettingsContext.Provider>
