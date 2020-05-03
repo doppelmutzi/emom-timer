@@ -158,7 +158,7 @@ export default function ExcercisesConfigurator() {
         <button
           onClick={() => {
             const encodedSettings = encodeURI(JSON.stringify(settings));
-            const url = `http://localhost:3000/?template=${encodedSettings}`;
+            const url = `${window.location.href}?template=${encodedSettings}`;
             prompt("Copy to clipboard: Ctrl+C, Enter", url);
           }}
         >
