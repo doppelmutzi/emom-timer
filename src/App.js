@@ -17,10 +17,12 @@ function App() {
   );
 
   const [voices, setVoices] = useState(() => {
-    // called after first render
-    synth.addEventListener("voiceschanged", () => {
-      setVoices(synth.getVoices());
-    });
+    if ("onvoiceschanged" in synth) {
+      // called after first render
+      synth.addEventListener("voiceschanged", () => {
+        setVoices(synth.getVoices());
+      });
+    }
     return synth.getVoices();
   });
 
