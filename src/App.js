@@ -1,6 +1,4 @@
 import React, { useReducer, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import SettingsContext from "./SettingsContext";
 import settingsReducer, { getInitialSettings } from "./settingsReducer";
 import EditView from "./EditView";
@@ -35,21 +33,16 @@ function App() {
 
   return (
     <SettingsContext.Provider value={{ settings, voices, play, dispatch }}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <Router>
-            <Switch>
-              <Route exact path="/">
-                <EditView />
-              </Route>
-              <Route path="/workout">
-                <WorkoutView />
-              </Route>
-            </Switch>
-          </Router>
-        </header>
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <EditView />
+          </Route>
+          <Route path="/workout">
+            <WorkoutView />
+          </Route>
+        </Switch>
+      </Router>
     </SettingsContext.Provider>
   );
 }

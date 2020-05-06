@@ -6,6 +6,7 @@ import { UNIT } from "./settingsReducer";
 import { HorizontalContainer } from "./Layout";
 import TemplatesDropdown from "./TemplatesDropdown";
 import { useHistory, useLocation } from "react-router-dom";
+import { RadioGroup, RadioButton } from "./components/RadioButton";
 
 // A custom hook that builds on useLocation to parse
 // the query string for you.
@@ -38,6 +39,20 @@ export default function ExcercisesConfigurator() {
 
   return (
     <div className="exercises-container">
+      <RadioGroup>
+        <RadioButton
+          label="Deutsch"
+          icon="🇩🇪"
+          onClick={() => dispatch({ type: "SET_VOICE", voice: "de" })}
+          checked={settings.currentVoice === "de"}
+        />
+        <RadioButton
+          label="Italiänisch"
+          icon="🇮🇹"
+          onClick={() => dispatch({ type: "SET_VOICE", voice: "it" })}
+          checked={settings.currentVoice === "it"}
+        />
+      </RadioGroup>
       <TemplatesDropdown />
       <HorizontalContainer>
         <select

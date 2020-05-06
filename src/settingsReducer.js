@@ -7,6 +7,11 @@ export default (state, action) => {
         ...state,
         dirty: action.dirty
       };
+    case "SET_VOICE":
+      return {
+        ...state,
+        currentVoice: action.voice
+      };
     case "CHANGE_VOICE":
       return {
         ...state,
@@ -52,6 +57,7 @@ export function getInitialSettings() {
     dirty: true,
     voiceIndex: 0,
     timerType: "emom",
+    currentVoice: "de",
     emomTimeInSec: 0,
     rounds: 0,
     minutes: []

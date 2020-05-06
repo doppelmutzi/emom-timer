@@ -1,10 +1,20 @@
 .l-horizontal {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.l-horizontal > * {
+  flex: 1;
 }
 
 .l-horizontal > * + * {
   margin-left: 10px;
+}
+
+.l-vertical {
+  width: 100%;
 }
 
 .l-vertical > * + * {
