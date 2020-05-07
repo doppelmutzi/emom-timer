@@ -14,11 +14,11 @@ const WorkoutView = () => {
   const history = useHistory();
 
   useEffect(() => {
-    const overallMinutes = getOverallMinutes(
+    const combinedMinutes = getOverallMinutes(
       settings.minutes,
       settings.emomTimeInSec
     );
-    setOverallMinutes(overallMinutes);
+    setOverallMinutes(combinedMinutes);
   }, [settings.minutes, settings.emomTimeInSec]);
 
   // https://stackoverflow.com/questions/55045566/react-hooks-usecallback-causes-child-to-re-render/55047178#55047178
