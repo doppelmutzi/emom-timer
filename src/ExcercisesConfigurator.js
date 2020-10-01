@@ -1,15 +1,15 @@
 import React, { useContext, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+
 import UtteranceInput from "./UtteranceInput";
 import SettingsContext from "./SettingsContext";
 import "./exercises.css";
 import { UNIT } from "./settingsReducer";
 import { HorizontalContainer } from "./Layout";
 import TemplatesDropdown from "./TemplatesDropdown";
-import { useHistory, useLocation } from "react-router-dom";
 import { RadioGroup, RadioButton } from "./components/RadioButton";
 
-// A custom hook that builds on useLocation to parse
-// the query string for you.
+// A custom hook that builds on useLocation to parse the query string for you.
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -35,7 +35,7 @@ export default function ExcercisesConfigurator() {
         // illegal template
       }
     }
-  }, [template]);
+  }, [dispatch, template]);
 
   return (
     <div className="exercises-container">
