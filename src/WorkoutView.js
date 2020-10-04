@@ -1,9 +1,45 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { Box } from "@material-ui/core";
 
 import SettingsContext from "./SettingsContext";
 import Timer from "./Timer";
 import { UNIT } from "./settingsReducer";
+import ProgressArc from "./components/ProgressArc";
+
+function useColorIndication(progressPercentage) {
+  const [colorIndicator, setColorIndicator] = useState("red");
+  useEffect(() => {
+    progressPercentage > 50
+      ? setColorIndicator("green")
+      : setColorIndicator("red");
+  }, [progressPercentage]);
+  return colorIndicator;
+}
+
+function ProgressCircleWrapper() {
+  const svgWidth = 150;
+  const arcWidth = 12;
+  const [progressPercentage, setProgressPercentage] = useState(50);
+  const colorIndicator = useColorIndication(progressPercentage);
+  function valuetext(value) {
+    return `${value}°C`;
+  }
+  function setProgressValue(event, value) {
+    setProgressPercentage(value);
+  }
+
+  return (
+    <Box padding="3rem" justifyContent="center">
+      <ProgressArc
+        svgWidth={svgWidth}
+        arcWidth={arcWidth}
+        progressPercentage={progressPercentage}
+        colorIndicator={colorIndicator}
+      />
+    </Box>
+  );
+}
 
 const WorkoutView = () => {
   const { settings, play } = useContext(SettingsContext);
@@ -26,6 +62,7 @@ const WorkoutView = () => {
   // https://codesandbox.io/s/l4oqzp5z1q?fontsize=14&file=/src/index.js
   return (
     <div>
+      <ProgressCircleWrapper />
       <Timer
         label="emom"
         countInSec={settings.emomTimeInSec}
