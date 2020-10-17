@@ -12,4 +12,4 @@ const EditView = () => {
   );
 };
 
-export default EditView;
+export default React.memo(EditView);

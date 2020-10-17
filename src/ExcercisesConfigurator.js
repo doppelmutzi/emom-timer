@@ -14,7 +14,8 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-export default function ExcercisesConfigurator() {
+function ExcercisesConfigurator() {
+  console.log("render ExcercisesConfigurator");
   const { dispatch, settings } = useContext(SettingsContext);
   const { timerType, emomTimeInSec, rounds, minutes, dirty } = settings;
   const history = useHistory();
@@ -22,6 +23,7 @@ export default function ExcercisesConfigurator() {
   const template = query.get("template");
 
   useEffect(() => {
+    console.log("useEffect ExcercisesConfigurator [dispatch, template");
     if (template) {
       const templateStringified = decodeURI(template);
       console.log("template", templateStringified);
@@ -219,3 +221,7 @@ export default function ExcercisesConfigurator() {
     dispatch({ type: "SET_MINUTES", minutes: [...minutes, minute] });
   }
 }
+
+ExcercisesConfigurator.whyDidYouRender = true;
+
+export default ExcercisesConfigurator;

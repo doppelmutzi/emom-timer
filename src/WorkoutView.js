@@ -20,14 +20,15 @@ function useColorIndication(progressPercentage) {
 function ProgressCircleWrapper() {
   const svgWidth = 150;
   const arcWidth = 12;
-  const [progressPercentage, setProgressPercentage] = useState(50);
+  const [progressPercentage /*, setProgressPercentage */] = useState(50);
   const colorIndicator = useColorIndication(progressPercentage);
-  function valuetext(value) {
-    return `${value}°C`;
-  }
-  function setProgressValue(event, value) {
-    setProgressPercentage(value);
-  }
+
+  // function valuetext(value) {
+  //   return `${value}°C`;
+  // }
+  // function setProgressValue(event, value) {
+  //   setProgressPercentage(value);
+  // }
 
   return (
     <Box padding="3rem" justifyContent="center">
@@ -42,20 +43,32 @@ function ProgressCircleWrapper() {
 }
 
 const WorkoutView = () => {
-  const { settings, play } = useContext(SettingsContext);
+  const { settings, play, dispatch } = useContext(SettingsContext);
   const [playback, setPlayback] = useState();
   const [overallMinutes, setOverallMinutes] = useState([]);
   const [currentTimerIndex, setCurrentTimerIndex] = useState(0);
-  const { dispatch } = useContext(SettingsContext);
   const history = useHistory();
 
   useEffect(() => {
-    const combinedMinutes = getOverallMinutes(
-      settings.minutes,
-      settings.emomTimeInSec
-    );
-    setOverallMinutes(combinedMinutes);
-  }, [settings.minutes, settings.emomTimeInSec]);
+    console.log("useEffect WorkoutView");
+    function getOverallMinutes(minutes, emomTimeInSec) {
+      const numberRounds =
+        Math.floor(parseInt(emomTimeInSec) / 60) / minutes.length;
+      let overallMinutes = [];
+      for (let i = 1; i <= numberRounds; i++) {
+        overallMinutes = [...overallMinutes, ...minutes];
+      }
+      return overallMinutes;
+    }
+
+    if (settings.minutes > 0 || settings.emomTimeInSec > 0) {
+      const combinedMinutes = getOverallMinutes(
+        settings.minutes,
+        settings.emomTimeInSec
+      );
+      setOverallMinutes(combinedMinutes);
+    }
+  }, [settings.minutes, settings.emomTimeInSec, settings]);
 
   // https://stackoverflow.com/questions/55045566/react-hooks-usecallback-causes-child-to-re-render/55047178#55047178
   // https://stackoverflow.com/questions/54932674/trouble-with-simple-example-of-react-hooks-usecallback
@@ -144,14 +157,6 @@ const WorkoutView = () => {
   );
 };
 
-function getOverallMinutes(minutes, emomTimeInSec) {
-  const numberRounds =
-    Math.floor(parseInt(emomTimeInSec) / 60) / minutes.length;
-  let overallMinutes = [];
-  for (let i = 1; i <= numberRounds; i++) {
-    overallMinutes = [...overallMinutes, ...minutes];
-  }
-  return overallMinutes;
-}
+WorkoutView.whyDidYouRender = true;
 
-export default WorkoutView;
+export default React.memo(WorkoutView);

@@ -1,7 +1,4 @@
 {
-  "editor.rename.enablePreview": false,
-  "workbench.editor.enablePreview": false,
-  "workbench.editor.enablePreviewFromQuickOpen": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
@@ -11,5 +8,9 @@
   },
   "[javascriptreact]": {
     "editor.formatOnSave": false
+  },
+  "workbench.editor.enablePreview": false,
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#000000" // Change this color!
   }
 }

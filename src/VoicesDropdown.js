@@ -113,4 +113,6 @@ function getFlag(lang) {
   return "🏳️‍🌈";
 }
 
+VoicesDropdown.whyDidYouRender = true;
+
 export default VoicesDropdown;

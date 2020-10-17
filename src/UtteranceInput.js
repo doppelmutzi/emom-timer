@@ -1,35 +1,33 @@
 import React, { useState, useEffect } from "react";
 import "./input.css";
 
-// TODO controlled/uncontrolled warning beheben
-const UtteranceInput = ({
-  onChange,
-  type,
-  value: initialValue,
-  label,
-  placeholder
-}) => {
-  const [value, setValue] = useState("");
+const UtteranceInput = ({ onChange, type, value, label, placeholder }) => {
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
+    console.log("useEffect UtteranceInput [value]");
+    if (value) {
+      setInputValue(value);
+    }
+  }, [value]);
 
   return (
     <div className="input-container">
       <label>{label}</label>
       <input
         type={type}
-        value={value}
+        value={inputValue}
         placeholder={placeholder}
         onChange={evt => {
-          const { value: val } = evt.target;
-          setValue(val);
-          onChange(val);
+          const { value: newValue } = evt.target;
+          setInputValue(newValue);
+          onChange(newValue);
         }}
       />
     </div>
   );
 };
 
-export default UtteranceInput;
+UtteranceInput.whyDidYouRender = true;
+
+export default React.memo(UtteranceInput);

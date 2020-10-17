@@ -2,7 +2,7 @@ import React from "react";
 import { string, bool, func } from "prop-types";
 
 import "./RadioButton.css";
-export const RadioButton = ({ label, icon, checked, onClick }) => {
+export const RadioButton = React.memo(({ label, icon, checked, onClick }) => {
   return (
     <div className="radio-button" onClick={onClick}>
       <label>
@@ -16,7 +16,7 @@ export const RadioButton = ({ label, icon, checked, onClick }) => {
       </div>
     </div>
   );
-};
+});
 
 RadioButton.propTypes = {
   label: string.isRequired,
@@ -30,6 +30,6 @@ RadioButton.defaultProps = {
   checked: false
 };
 
-export const RadioGroup = ({ children }) => (
+export const RadioGroup = React.memo(({ children }) => (
   <div className="radio-group">{children}</div>
-);
+));

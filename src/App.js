@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useEffect, useState, useCallback } from "react";
 import SettingsContext from "./SettingsContext";
 import settingsReducer, { getInitialSettings } from "./settingsReducer";
 import EditView from "./EditView";
@@ -14,25 +14,41 @@ function App() {
     getInitialSettings()
   );
 
-  const [voices, setVoices] = useState(() => {
+  const [voices, setVoices] = useState([]);
+
+  useEffect(() => {
     if ("onvoiceschanged" in synth) {
       // called after first render
       synth.addEventListener("voiceschanged", () => {
         setVoices(synth.getVoices());
       });
     }
-    return synth.getVoices();
-  });
+    setVoices(synth.getVoices());
+  }, [synth]);
 
-  const play = text => {
-    const { voiceIndex: index } = settings;
-    utterance.voice = voices[index];
-    utterance.text = text;
-    synth.speak(utterance);
-  };
+  /*
+    muss in useCallback gewrapped werden, ansonsten werden alle Komponenten
+    re-rendered, die Kontext nutzen (unabhängig davon, ob sie diese Funktion benötigen/verwenden)
+  */
+  const memoizedPlay = useCallback(
+    text => {
+      const { voiceIndex: index } = settings;
+      utterance.voice = voices[index];
+      utterance.text = text;
+      synth.speak(utterance);
+    },
+    [settings, synth, utterance, voices]
+  );
 
+  /*
+    dispatch ohne useCallback nutzbar:
+    React guarantees that dispatch function identity is stable and won’t change on re-renders. This is why it’s safe to omit from the useEffect or useCallback dependency list.
+    https://reactjs.org/docs/hooks-reference.html#usereducer
+  */
   return (
-    <SettingsContext.Provider value={{ settings, voices, play, dispatch }}>
+    <SettingsContext.Provider
+      value={{ settings, voices, play: memoizedPlay, dispatch }}
+    >
       <Router>
         <Switch>
           <Route exact path="/">

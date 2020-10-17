@@ -8,9 +8,10 @@
   "plugins": ["prettier", "react-hooks"],
   "rules": {
     "prettier/prettier": "error",
-    "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "error",
+    "react/display-name": "off",
+    "react/prop-types": "off"
   },
   "parser": "babel-eslint",
   "env": {

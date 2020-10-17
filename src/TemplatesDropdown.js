@@ -8,6 +8,7 @@ const TemplatesDropdown = () => {
   const { dispatch } = useContext(SettingsContext);
 
   useEffect(() => {
+    console.log("useEffect TemplatesDropdown []");
     const tpl = new Map();
     for (let i = 0; i < localStorage.length; i++) {
       if (i === 0) {
@@ -48,6 +49,4 @@ const TemplatesDropdown = () => {
   );
 };
 
-TemplatesDropdown.propTypes = {};
-
-export default TemplatesDropdown;
+export default React.memo(TemplatesDropdown);

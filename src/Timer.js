@@ -4,10 +4,10 @@ const Timer = ({
   countInSec,
   restInSec = 0,
   label,
-  onStart = () => {},
-  onNearComplete = () => {},
-  onComplete = () => {},
-  onRest = () => {},
+  onStart,
+  onNearComplete,
+  onComplete,
+  onRest,
   playback
 }) => {
   const intervalRef = useRef(1000);
@@ -16,35 +16,43 @@ const Timer = ({
 
   const [count, setCount] = useState(initialCountRef.current);
 
+  // TODO useEffects alle entfernen durch memoizing der Funktionen?
+
+  // so sinnvoll? Was wollte ich da machen?
   useEffect(() => {
+    console.log("useEffect Timer [countInSec]");
     initialCountRef.current = countInSec * intervalRef.current;
   }, [countInSec]);
 
   const onStartRef = useRef();
 
+  // so sinnvoll? Was wollte ich da machen?
   useEffect(() => {
-    // console.log("useEffect onStart");
+    console.log("useEffect Timer [onStart]");
     onStartRef.current = onStart;
   }, [onStart]);
 
   const onRestRef = useRef();
 
+  // so sinnvoll? Was wollte ich da machen?
   useEffect(() => {
-    // console.log("useEffect onRest");
+    console.log("useEffect Timer [onRest]");
     onRestRef.current = onRest;
   }, [onRest]);
 
   const onCompletetRef = useRef();
 
+  // so sinnvoll? Was wollte ich da machen?
   useEffect(() => {
-    // console.log("useEffect onComplete");
+    console.log("useEffect Timer [onComplete]");
     onCompletetRef.current = onComplete;
   }, [onComplete]);
 
   const onNearCompletetRef = useRef();
 
+  // so sinnvoll? Was wollte ich da machen?
   useEffect(() => {
-    // console.log("useEffect onNearComplete");
+    console.log("useEffect Timer [onNearComplete]");
     onNearCompletetRef.current = onNearComplete;
   }, [onNearComplete]);
 
@@ -82,5 +90,7 @@ const Timer = ({
     </div>
   );
 };
+
+Timer.whyDidYouRender = true;
 
 export default Timer;

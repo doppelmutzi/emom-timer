@@ -13,8 +13,12 @@ function useColorIndication(progressPercentage) {
   return colorIndicator;
 }
 
-function ProgressArc(props) {
-  const { svgWidth, arcWidth, progressPercentage, colorIndicator } = props;
+function ProgressArc({
+  svgWidth,
+  arcWidth,
+  progressPercentage,
+  colorIndicator
+}) {
   const svgHeight = svgWidth;
   const arcOuterRadius = svgWidth / 2;
   const arcInnerRadius = svgWidth / 2 - arcWidth;
@@ -88,4 +92,6 @@ export function ProgressCircleWrapper() {
   );
 }
 
-export default ProgressArc;
+ProgressArc.whyDidYouRender = true;
+
+export default React.memo(ProgressArc);

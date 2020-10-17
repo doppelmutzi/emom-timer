@@ -16,4 +16,4 @@ const PlayButton = ({ textToPlay }) => {
   );
 };
 
-export default PlayButton;
+export default React.memo(PlayButton);
