@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Box } from "@material-ui/core";
 
@@ -42,6 +42,10 @@ function ProgressCircleWrapper() {
   );
 }
 
+const onStartDefault = () => {};
+const onNearCompleteDefault = onStartDefault;
+const onRestDefault = onStartDefault;
+
 const WorkoutView = () => {
   const { settings, play, dispatch } = useContext(SettingsContext);
   const [playback, setPlayback] = useState();
@@ -70,6 +74,38 @@ const WorkoutView = () => {
     }
   }, [settings.minutes, settings.emomTimeInSec, settings]);
 
+  const memoizedOnOverallComplete = useCallback(() => {
+    play("Workout complete. Have a nice day.");
+  }, [play]);
+
+  const memoizedOnStart = useCallback(
+    minute => {
+      play(`Start ${minute.label}`);
+    },
+    [play]
+  );
+
+  const memoizedOnNearComplete = useCallback(
+    (nextMinuteAvailable, labelNextMinute) => {
+      nextMinuteAvailable && play(`Next up ${labelNextMinute}`);
+    },
+    [play]
+  );
+
+  const memoizedOnComplete = useCallback(
+    index => {
+      index < settings.minutes.length - 1 && setCurrentTimerIndex(i => i + 1);
+    },
+    [settings.minutes]
+  );
+
+  const memoizedOnRest = useCallback(
+    restInSec => {
+      restInSec > 0 && play("rest");
+    },
+    [play]
+  );
+
   // https://stackoverflow.com/questions/55045566/react-hooks-usecallback-causes-child-to-re-render/55047178#55047178
   // https://stackoverflow.com/questions/54932674/trouble-with-simple-example-of-react-hooks-usecallback
   // https://codesandbox.io/s/l4oqzp5z1q?fontsize=14&file=/src/index.js
@@ -80,9 +116,10 @@ const WorkoutView = () => {
         label="emom"
         countInSec={settings.emomTimeInSec}
         playback={playback}
-        onComplete={() => {
-          play("Workout complete. Have a nice day.");
-        }}
+        onStart={onStartDefault}
+        onNearComplete={onNearCompleteDefault}
+        onComplete={memoizedOnOverallComplete}
+        onRest={onRestDefault}
         play={play}
       />
 
@@ -92,8 +129,6 @@ const WorkoutView = () => {
           nextMinuteAvailable && settings.minutes[index + 1].label;
         const restInSec = minute.unit === UNIT.SECONDS ? 60 - minute.amount : 0;
 
-        // TODO React.memo für Timer ?
-
         return (
           index === currentTimerIndex && (
             <div key={index}>
@@ -102,19 +137,14 @@ const WorkoutView = () => {
               )}
               <Timer
                 label={`min ${index + 1}: ${minute.label}`}
-                onStart={() => play(`Start ${minute.label}`)}
-                onNearComplete={() => {
-                  nextMinuteAvailable && play(`Next up ${labelNextMinute}`);
-                }}
-                onComplete={() => {
-                  index < settings.minutes.length - 1 &&
-                    setCurrentTimerIndex(i => i + 1);
-                }}
+                onStart={() => memoizedOnStart(minute)}
+                onNearComplete={() =>
+                  memoizedOnNearComplete(nextMinuteAvailable, labelNextMinute)
+                }
+                onComplete={() => memoizedOnComplete(index)}
                 countInSec={minute.unit === UNIT.SECONDS ? minute.amount : 60}
                 restInSec={restInSec}
-                onRest={() => {
-                  restInSec > 0 && play("rest");
-                }}
+                onRest={() => memoizedOnRest(restInSec)}
                 playback={playback}
               />
             </div>
