@@ -1,7 +1,13 @@
 .exercises-container > * + * {
   margin-top: 10px;
 }
-.exercises-container button {
+
+.exercises-container .l-horizontal > * + * {
+  margin-left: 10px;
+}
+
+.exercises-container .customized-button {
+  margin-top: 10px;
   display: block;
 }
 

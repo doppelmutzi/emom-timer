@@ -17,7 +17,7 @@ function ProgressArc({
   svgWidth,
   arcWidth,
   progressPercentage,
-  colorIndicator
+  colorIndicator,
 }) {
   const svgHeight = svgWidth;
   const arcOuterRadius = svgWidth / 2;
@@ -28,9 +28,9 @@ function ProgressArc({
     .outerRadius(arcOuterRadius)
     .startAngle(0)
     .cornerRadius(5);
-  const progressArc = value =>
+  const progressArc = (value) =>
     arcGenerator({
-      endAngle: 2 * Math.PI * value
+      endAngle: 2 * Math.PI * value,
     });
 
   return (

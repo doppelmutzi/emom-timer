@@ -8,7 +8,7 @@ const Timer = ({
   onNearComplete,
   onComplete,
   onRest,
-  playback
+  playback,
 }) => {
   const intervalRef = useRef(1000);
   const restRef = useRef(restInSec * intervalRef.current);
@@ -23,7 +23,7 @@ const Timer = ({
         if (!isRestRef.current) onStart();
       }
       const id = setInterval(() => {
-        setCount(c => c - intervalRef.current);
+        setCount((c) => c - intervalRef.current);
       }, intervalRef.current);
       if (restRef.current === 0 && count === 3 * intervalRef.current) {
         onNearComplete();

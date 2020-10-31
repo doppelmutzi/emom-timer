@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import Button from "./components/Button";
 
+import Screen from "./Screen";
 import UtteranceInput from "./UtteranceInput";
 import SettingsContext from "./SettingsContext";
 import "./exercises.css";
 import { UNIT } from "./settingsReducer";
-import { HorizontalContainer } from "./Layout";
+import { HorizontalContainer, VerticalContainer } from "./Layout";
 import TemplatesDropdown from "./TemplatesDropdown";
 import { RadioGroup, RadioButton } from "./components/RadioButton";
 
@@ -31,7 +33,7 @@ function ExcercisesConfigurator() {
         const json = JSON.parse(templateStringified);
         dispatch({
           type: "LOAD_TEMPLATE",
-          template: json
+          template: json,
         });
       } catch (error) {
         // illegal template
@@ -40,7 +42,7 @@ function ExcercisesConfigurator() {
   }, [dispatch, template]);
 
   return (
-    <div className="exercises-container">
+    <Screen className="exercises-container">
       <RadioGroup>
         <RadioButton
           label="Deutsch"
@@ -59,7 +61,7 @@ function ExcercisesConfigurator() {
       <HorizontalContainer>
         <select
           value={timerType}
-          onChange={evt => {
+          onChange={(evt) => {
             const timerType = evt.target.value;
             dispatch({ type: "SET_TIMER_TYPE", timerType });
           }}
@@ -73,10 +75,10 @@ function ExcercisesConfigurator() {
             label="Overall workout time"
             placeholder="in minutes"
             type="number"
-            onChange={timeInMinutes =>
+            onChange={(timeInMinutes) =>
               dispatch({
                 type: "SET_EMOM_TIME",
-                emomTimeInSec: timeInMinutes * 60
+                emomTimeInSec: timeInMinutes * 60,
               })
             }
           />
@@ -84,40 +86,40 @@ function ExcercisesConfigurator() {
           <UtteranceInput
             label="Number repetitions of minutes"
             type="number"
-            onChange={rounds => dispatch({ type: "SET_ROUNDS", rounds })}
+            onChange={(rounds) => dispatch({ type: "SET_ROUNDS", rounds })}
           />
         )}
       </HorizontalContainer>
-      <HorizontalContainer>
-        <button
+      <VerticalContainer>
+        <Button
           onClick={() => {
             dispatch({ type: "SET_DIRTY", dirty: true });
             addMinute({ label: "", unit: UNIT.COUNT, valid: false });
           }}
         >
           add 1 minute for reps
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => {
             dispatch({ type: "SET_DIRTY", dirty: true });
             addMinute({
               label: "",
               amount: 30,
               unit: UNIT.SECONDS,
-              valid: false
+              valid: false,
             });
           }}
         >
           add 1 minute for time
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => {
             addMinute({ label: "1 minute rest", unit: UNIT.REST, valid: true });
           }}
         >
           add 1 min rest
-        </button>
-      </HorizontalContainer>
+        </Button>
+      </VerticalContainer>
       {minutes.map((minute, i) => {
         return (
           <div key={i} className="exercise-set l-horizontal">
@@ -133,7 +135,7 @@ function ExcercisesConfigurator() {
                   label="Exercises"
                   value={minute.label}
                   type="text"
-                  onChange={label => {
+                  onChange={(label) => {
                     if (label !== "") {
                       minute.label = label;
                       minute.valid = true;
@@ -147,7 +149,7 @@ function ExcercisesConfigurator() {
                     value={minute.amount}
                     placeholder="number seconds"
                     type="number"
-                    onChange={amount => {
+                    onChange={(amount) => {
                       if (amount > 0) {
                         minute.amount = amount;
                         minute.valid = true;
@@ -162,7 +164,8 @@ function ExcercisesConfigurator() {
         );
       })}
       <HorizontalContainer>
-        <button
+        <Button
+          color="secondary"
           disabled={isDisabled()}
           onClick={() => {
             updateState();
@@ -171,8 +174,9 @@ function ExcercisesConfigurator() {
           }}
         >
           Save timer
-        </button>
-        <button
+        </Button>
+        <Button
+          color="secondary"
           onClick={() => {
             const encodedSettings = encodeURI(JSON.stringify(settings));
             const url = `${window.location.href}?template=${encodedSettings}`;
@@ -180,8 +184,8 @@ function ExcercisesConfigurator() {
           }}
         >
           share
-        </button>
-        <button
+        </Button>
+        <Button
           disabled={isDisabled()}
           onClick={() => {
             updateState();
@@ -189,9 +193,9 @@ function ExcercisesConfigurator() {
           }}
         >
           Go to workout
-        </button>
+        </Button>
       </HorizontalContainer>
-    </div>
+    </Screen>
   );
 
   function updateState() {
@@ -212,7 +216,7 @@ function ExcercisesConfigurator() {
   }
 
   function checkInput() {
-    const invalid = minutes.filter(minute => minute.valid === false);
+    const invalid = minutes.filter((minute) => minute.valid === false);
     if (invalid.length > 0) dispatch({ type: "SET_DIRTY", dirty: true });
     else dispatch({ type: "SET_DIRTY", dirty: false });
   }
