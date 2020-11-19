@@ -23,12 +23,12 @@ const TemplatesDropdown = () => {
     <HorizontalContainer>
       <select
         value={templateKey}
-        onClick={evt => {
+        onClick={(evt) => {
           const key = evt.target.value;
           setTemplateKey(key);
         }}
       >
-        {Array.from(templates.keys()).map(key => (
+        {Array.from(templates.keys()).map((key) => (
           <option key={key} value={key}>
             {key}
           </option>
@@ -39,7 +39,7 @@ const TemplatesDropdown = () => {
           const templateStringified = templates.get(templateKey);
           dispatch({
             type: "LOAD_TEMPLATE",
-            template: JSON.parse(templateStringified)
+            template: JSON.parse(templateStringified),
           });
         }}
       >
