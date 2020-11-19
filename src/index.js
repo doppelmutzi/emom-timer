@@ -9,7 +9,7 @@ import App from "./App";
 whyDidYouRender(React, {
   onlyLogs: true,
   titleColor: "green",
-  diffNameColor: "darkturquoise"
+  diffNameColor: "darkturquoise",
 });
 
 ReactDOM.render(<App />, document.getElementById("root"));

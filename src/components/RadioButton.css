@@ -15,6 +15,10 @@
   align-items: center;
 }
 
+.radio-button > label > * + * {
+  margin-left: 5px;
+}
+
 .radio-button > div {
   display: flex;
   align-items: center;
@@ -48,12 +52,10 @@
 }
 
 .radio-group {
-  --spacing: 3px;
-  margin: calc(-1 * var(--spacing));
   display: flex;
   flex-wrap: wrap;
 }
 
 .radio-group > * {
-  margin: var(--spacing);
+  margin: 7px;
 }

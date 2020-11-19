@@ -18,7 +18,7 @@ const UtteranceInput = ({ onChange, type, value, label, placeholder }) => {
         type={type}
         value={inputValue}
         placeholder={placeholder}
-        onChange={evt => {
+        onChange={(evt) => {
           const { value: newValue } = evt.target;
           setInputValue(newValue);
           onChange(newValue);

@@ -22,12 +22,12 @@ RadioButton.propTypes = {
   label: string.isRequired,
   onClick: func.isRequired,
   icon: string,
-  checked: bool
+  checked: bool,
 };
 
 RadioButton.defaultProps = {
   icon: null,
-  checked: false
+  checked: false,
 };
 
 export const RadioGroup = React.memo(({ children }) => (

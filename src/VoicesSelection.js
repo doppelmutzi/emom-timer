@@ -1,34 +1,38 @@
 import React, { useState, useContext } from "react";
-import SettingsContext from "./SettingsContext";
-import { HorizontalContainer } from "./Layout";
-import PlayButton from "./PlayButton";
+import { TextField } from "@material-ui/core";
 
-const VoicesDropdown = () => {
+import SettingsContext from "./SettingsContext";
+import { VerticalContainer, HorizontalContainer } from "./Layout";
+import PlayButton from "./PlayButton";
+import { RadioGroup, RadioButton } from "./components/RadioButton";
+
+const VoicesSelection = () => {
   const { settings, voices, dispatch } = useContext(SettingsContext);
   const [textToPlay, setTextToPlay] = useState("");
   return (
-    <HorizontalContainer>
-      <select
-        value={settings.voiceIndex}
-        onChange={evt => {
-          const index = evt.target.value;
-          dispatch({ type: "CHANGE_VOICE", index });
-        }}
-      >
+    <VerticalContainer>
+      <HorizontalContainer>
+        <TextField
+          variant="filled"
+          label="preview playback"
+          placeholder=""
+          onChange={(evt) => setTextToPlay(evt.target.value)}
+          value={textToPlay}
+        />
+        <PlayButton textToPlay={textToPlay} />
+      </HorizontalContainer>
+      <RadioGroup>
         {voices.map((voice, i) => (
-          <option key={i} value={i}>
-            {voice.name} {voice.lang} {getFlag(voice.lang)}
-          </option>
+          <RadioButton
+            key={i}
+            label={`${voice.name} ${voice.lang}`}
+            icon={getFlag(voice.lang)}
+            onClick={() => dispatch({ type: "CHANGE_VOICE", index: i })}
+            checked={settings.voiceIndex === i}
+          />
         ))}
-      </select>
-      <input
-        type="text"
-        placeholder="text for prev playback"
-        onChange={evt => setTextToPlay(evt.target.value)}
-        value={textToPlay}
-      />
-      <PlayButton textToPlay={textToPlay} />
-    </HorizontalContainer>
+      </RadioGroup>
+    </VerticalContainer>
   );
 };
 
@@ -113,6 +117,6 @@ function getFlag(lang) {
   return "🏳️‍🌈";
 }
 
-VoicesDropdown.whyDidYouRender = true;
+VoicesSelection.whyDidYouRender = true;
 
-export default VoicesDropdown;
+export default VoicesSelection;

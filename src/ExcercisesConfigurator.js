@@ -1,7 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import Button from "./components/Button";
+import { Dialog, Slide, IconButton } from "@material-ui/core";
+import { Settings as SettingsIcon } from "@material-ui/icons";
 
+import PreferencesView from "./views/Preferences";
+import Button from "./components/Button";
 import Screen from "./Screen";
 import UtteranceInput from "./UtteranceInput";
 import SettingsContext from "./SettingsContext";
@@ -9,15 +12,27 @@ import "./exercises.css";
 import { UNIT } from "./settingsReducer";
 import { HorizontalContainer, VerticalContainer } from "./Layout";
 import TemplatesDropdown from "./TemplatesDropdown";
-import { RadioGroup, RadioButton } from "./components/RadioButton";
 
 // A custom hook that builds on useLocation to parse the query string for you.
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="right" ref={ref} {...props} />;
+});
+
 function ExcercisesConfigurator() {
-  console.log("render ExcercisesConfigurator");
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const { dispatch, settings } = useContext(SettingsContext);
   const { timerType, emomTimeInSec, rounds, minutes, dirty } = settings;
   const history = useHistory();
@@ -43,20 +58,26 @@ function ExcercisesConfigurator() {
 
   return (
     <Screen className="exercises-container">
-      <RadioGroup>
-        <RadioButton
-          label="Deutsch"
-          icon="🇩🇪"
-          onClick={() => dispatch({ type: "SET_VOICE", voice: "de" })}
-          checked={settings.currentVoice === "de"}
-        />
-        <RadioButton
-          label="Italiänisch"
-          icon="🇮🇹"
-          onClick={() => dispatch({ type: "SET_VOICE", voice: "it" })}
-          checked={settings.currentVoice === "it"}
-        />
-      </RadioGroup>
+      <HorizontalContainer>
+        <div style={{ flex: 1, textAlign: "right" }}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClickOpen}
+            aria-label="open"
+          >
+            <SettingsIcon />
+          </IconButton>
+        </div>
+      </HorizontalContainer>
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <PreferencesView handleClose={handleClose} />
+      </Dialog>
       <TemplatesDropdown />
       <HorizontalContainer>
         <select

@@ -79,7 +79,7 @@ const WorkoutView = () => {
   }, [play]);
 
   const memoizedOnStart = useCallback(
-    minute => {
+    (minute) => {
       play(`Start ${minute.label}`);
     },
     [play]
@@ -93,14 +93,14 @@ const WorkoutView = () => {
   );
 
   const memoizedOnComplete = useCallback(
-    index => {
-      index < settings.minutes.length - 1 && setCurrentTimerIndex(i => i + 1);
+    (index) => {
+      index < settings.minutes.length - 1 && setCurrentTimerIndex((i) => i + 1);
     },
     [settings.minutes]
   );
 
   const memoizedOnRest = useCallback(
-    restInSec => {
+    (restInSec) => {
       restInSec > 0 && play("rest");
     },
     [play]

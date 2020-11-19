@@ -16,3 +16,7 @@
 .l-vertical > * + * {
   margin-top: 10px;
 }
+
+.l-container {
+  margin: 10px;
+}

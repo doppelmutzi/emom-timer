@@ -1,4 +1,10 @@
-import React, { useReducer, useEffect, useState, useCallback } from "react";
+import React, {
+  useReducer,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import SettingsContext from "./SettingsContext";
 import settingsReducer, { getInitialSettings } from "./settingsReducer";
 import EditView from "./EditView";
@@ -7,7 +13,10 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
   const synth = window.speechSynthesis;
-  const utterance = new SpeechSynthesisUtterance("Hello Basis Community");
+  const utterance = useMemo(
+    () => new SpeechSynthesisUtterance("Hello Basis Community"),
+    []
+  );
 
   const [settings, dispatch] = useReducer(
     settingsReducer,
@@ -31,7 +40,7 @@ function App() {
     re-rendered, die Kontext nutzen (unabhängig davon, ob sie diese Funktion benötigen/verwenden)
   */
   const memoizedPlay = useCallback(
-    text => {
+    (text) => {
       const { voiceIndex: index } = settings;
       utterance.voice = voices[index];
       utterance.text = text;

@@ -1,9 +1,0 @@
-.preview-button:after {
-  content: "\025B6";
-  color: green;
-  padding-left: 5px;
-}
-
-.preview-button {
-  border-radius: 5px;
-}

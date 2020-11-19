@@ -5,41 +5,36 @@ export default (state, action) => {
     case "SET_DIRTY":
       return {
         ...state,
-        dirty: action.dirty
-      };
-    case "SET_VOICE":
-      return {
-        ...state,
-        currentVoice: action.voice
+        dirty: action.dirty,
       };
     case "CHANGE_VOICE":
       return {
         ...state,
-        voiceIndex: action.index
+        voiceIndex: action.index,
       };
     case "SET_TIMER_TYPE":
       return {
         ...state,
-        timerType: action.timerType
+        timerType: action.timerType,
       };
     case "SET_EMOM_TIME":
       return {
         ...state,
-        emomTimeInSec: action.emomTimeInSec
+        emomTimeInSec: action.emomTimeInSec,
       };
     case "SET_ROUNDS":
       return {
         ...state,
-        rounds: action.rounds
+        rounds: action.rounds,
       };
     case "SET_MINUTES":
       return {
         ...state,
-        minutes: [...action.minutes]
+        minutes: [...action.minutes],
       };
     case "LOAD_TEMPLATE":
       return {
-        ...action.template
+        ...action.template,
       };
     default:
       return state;
@@ -49,7 +44,7 @@ export default (state, action) => {
 export const UNIT = {
   COUNT: "count",
   SECONDS: "seconds",
-  REST: "rest"
+  REST: "rest",
 };
 
 export function getInitialSettings() {
@@ -60,6 +55,6 @@ export function getInitialSettings() {
     currentVoice: "de",
     emomTimeInSec: 0,
     rounds: 0,
-    minutes: []
+    minutes: [],
   };
 }

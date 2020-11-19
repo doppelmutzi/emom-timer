@@ -1,18 +1,24 @@
 import React, { useContext } from "react";
+import { IconButton } from "@material-ui/core";
+import { PlayCircleOutline as PlayIcon } from "@material-ui/icons";
+
 import SettingsContext from "./SettingsContext";
-import "./Button.css";
 
 const PlayButton = ({ textToPlay }) => {
   const { play } = useContext(SettingsContext);
   return (
-    <button
-      className="preview-button"
-      onClick={() => {
-        play(textToPlay);
-      }}
-    >
-      preview
-    </button>
+    <div>
+      <IconButton
+        edge="start"
+        color="inherit"
+        onClick={() => {
+          play(textToPlay);
+        }}
+        aria-label="open"
+      >
+        <PlayIcon />
+      </IconButton>
+    </div>
   );
 };
 
