@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import SettingsContext from "./SettingsContext";
+import SettingsContext, { State } from "./SettingsContext";
 import settingsReducer, { getInitialSettings } from "./settingsReducer";
 import EditView from "./EditView";
 import WorkoutView from "./WorkoutView";
@@ -23,7 +23,7 @@ function App() {
     getInitialSettings()
   );
 
-  const [voices, setVoices] = useState([]);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
 
   useEffect(() => {
     if ("onvoiceschanged" in synth) {

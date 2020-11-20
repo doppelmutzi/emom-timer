@@ -1,4 +1,6 @@
-export default (state, action) => {
+import { State, ActionType } from "./SettingsContext";
+
+export default (state: State, action: ActionType): State => {
   switch (action.type) {
     case "RESET":
       return getInitialSettings();
@@ -47,7 +49,7 @@ export const UNIT = {
   REST: "rest",
 };
 
-export function getInitialSettings() {
+export function getInitialSettings(): State {
   return {
     dirty: true,
     voiceIndex: 0,

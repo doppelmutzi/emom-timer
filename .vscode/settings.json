@@ -9,6 +9,8 @@
   "[javascriptreact]": {
     "editor.formatOnSave": false
   },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "workbench.editor.enablePreview": false,
   "workbench.colorCustomizations": {
     "titleBar.activeBackground": "#000000" // Change this color!
