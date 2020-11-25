@@ -2,10 +2,11 @@ import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Box } from "@material-ui/core";
 
-import SettingsContext from "./SettingsContext";
-import Timer from "./Timer";
-import { UNIT } from "./settingsReducer";
-import ProgressArc from "./components/ProgressArc";
+import SettingsContext from "../SettingsContext";
+import Timer from "../Timer";
+import { UNIT } from "../settingsReducer";
+import ProgressArc from "../components/ProgressArc";
+import Screen from "../Screen";
 
 function useColorIndication(progressPercentage) {
   const [colorIndicator, setColorIndicator] = useState("red");
@@ -46,7 +47,7 @@ const onStartDefault = () => {};
 const onNearCompleteDefault = onStartDefault;
 const onRestDefault = onStartDefault;
 
-const WorkoutView = () => {
+const Workout = () => {
   const { settings, play, dispatch } = useContext(SettingsContext);
   const [playback, setPlayback] = useState();
   const [overallMinutes, setOverallMinutes] = useState([]);
@@ -54,7 +55,7 @@ const WorkoutView = () => {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("useEffect WorkoutView");
+    console.log("useEffect Workout");
     function getOverallMinutes(minutes, emomTimeInSec) {
       const numberRounds =
         Math.floor(parseInt(emomTimeInSec) / 60) / minutes.length;
@@ -110,7 +111,7 @@ const WorkoutView = () => {
   // https://stackoverflow.com/questions/54932674/trouble-with-simple-example-of-react-hooks-usecallback
   // https://codesandbox.io/s/l4oqzp5z1q?fontsize=14&file=/src/index.js
   return (
-    <div>
+    <Screen>
       <ProgressCircleWrapper />
       <Timer
         label="emom"
@@ -183,10 +184,8 @@ const WorkoutView = () => {
       >
         Create new timer
       </button>
-    </div>
+    </Screen>
   );
 };
 
-WorkoutView.whyDidYouRender = true;
-
-export default React.memo(WorkoutView);
+export default React.memo(Workout);

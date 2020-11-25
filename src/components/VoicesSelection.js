@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { TextField } from "@material-ui/core";
 
-import SettingsContext from "./SettingsContext";
-import { VerticalContainer, HorizontalContainer } from "./Layout";
+import SettingsContext from "../SettingsContext";
+import { VerticalContainer, HorizontalContainer } from "../Layout";
 import PlayButton from "./PlayButton";
-import { RadioGroup, RadioButton } from "./components/RadioButton";
+import { RadioGroup, RadioButton } from "./RadioButton";
 
 const VoicesSelection = () => {
   const { settings, voices, dispatch } = useContext(SettingsContext);

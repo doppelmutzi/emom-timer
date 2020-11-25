@@ -3,15 +3,15 @@ import { useHistory, useLocation } from "react-router-dom";
 import { Dialog, Slide, IconButton } from "@material-ui/core";
 import { Settings as SettingsIcon } from "@material-ui/icons";
 
-import PreferencesView from "./views/Preferences";
-import Button from "./components/Button";
-import Screen from "./Screen";
-import UtteranceInput from "./UtteranceInput";
-import SettingsContext from "./SettingsContext";
+import PreferencesView from "../views/Preferences";
+import Button from "../components/Button";
+import Screen from "../Screen";
+import UtteranceInput from "../components/UtteranceInput";
+import SettingsContext from "../SettingsContext";
 import "./exercises.css";
-import { UNIT } from "./settingsReducer";
-import { HorizontalContainer, VerticalContainer } from "./Layout";
-import TemplatesDropdown from "./TemplatesDropdown";
+import { UNIT } from "../settingsReducer";
+import { HorizontalContainer, VerticalContainer } from "../Layout";
+import TemplatesDropdown from "../views/TemplatesDropdown";
 
 // A custom hook that builds on useLocation to parse the query string for you.
 function useQuery() {
@@ -247,6 +247,4 @@ function ExcercisesConfigurator() {
   }
 }
 
-ExcercisesConfigurator.whyDidYouRender = true;
-
-export default ExcercisesConfigurator;
+export default React.memo(ExcercisesConfigurator);

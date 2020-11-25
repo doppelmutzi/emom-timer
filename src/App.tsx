@@ -7,8 +7,9 @@ import React, {
 } from "react";
 import SettingsContext, { State } from "./SettingsContext";
 import settingsReducer, { getInitialSettings } from "./settingsReducer";
-import EditView from "./EditView";
-import WorkoutView from "./WorkoutView";
+import ExcercisesConfigurator from "./screens/ExcercisesConfigurator";
+import WorkoutView from "./screens/Workout";
+import TimerType from "./screens/TimerType";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
@@ -61,7 +62,10 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            <EditView />
+            <TimerType />
+          </Route>
+          <Route exact path="/edit">
+            <ExcercisesConfigurator />
           </Route>
           <Route path="/workout">
             <WorkoutView />

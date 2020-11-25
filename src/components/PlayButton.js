@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { IconButton } from "@material-ui/core";
 import { PlayCircleOutline as PlayIcon } from "@material-ui/icons";
 
-import SettingsContext from "./SettingsContext";
+import SettingsContext from "../SettingsContext";
 
 const PlayButton = ({ textToPlay }) => {
   const { play } = useContext(SettingsContext);

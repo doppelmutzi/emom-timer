@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { HorizontalContainer } from "./Layout";
-import SettingsContext from "./SettingsContext";
+import { HorizontalContainer } from "../Layout";
+import SettingsContext from "../SettingsContext";
 
 const TemplatesDropdown = () => {
   const [templateKey, setTemplateKey] = useState();
