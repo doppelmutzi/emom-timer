@@ -4,7 +4,6 @@ import { AppBar, Toolbar, IconButton, Typography } from "@material-ui/core";
 import { ArrowBackIos as BackIcon } from "@material-ui/icons";
 
 import VoicesSelection from "../components/VoicesSelection";
-import Button from "../components/Button";
 import "../Layout.css";
 
 const useStyles = makeStyles((theme) => ({

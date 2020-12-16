@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import SettingsContext, { State } from "./SettingsContext";
+import SettingsContext from "./SettingsContext";
 import settingsReducer, { getInitialSettings } from "./settingsReducer";
 import ExcercisesConfigurator from "./screens/ExcercisesConfigurator";
 import WorkoutView from "./screens/Workout";
@@ -18,14 +18,12 @@ function App() {
     () => new SpeechSynthesisUtterance("Hello Basis Community"),
     []
   );
-
   const [settings, dispatch] = useReducer(
     settingsReducer,
     getInitialSettings()
   );
 
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
-
   useEffect(() => {
     if ("onvoiceschanged" in synth) {
       // called after first render
