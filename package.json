@@ -2,6 +2,11 @@
   "name": "workout-timer",
   "version": "0.1.0",
   "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {
     "d3": "^6.2.0",
     "@material-ui/core": "^4.11.1",
@@ -32,6 +37,8 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-standard": "^5.0.0",
+    "husky": "^4.3.6",
+    "lint-staged": "^10.5.3",
     "prettier": "^2.2.0"
   },
   "resolutions": {
