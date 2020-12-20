@@ -4,7 +4,11 @@ import { PlayCircleOutline as PlayIcon } from "@material-ui/icons";
 
 import SettingsContext from "../SettingsContext";
 
-const PlayButton = ({ textToPlay }) => {
+type PlayButtonInterface = {
+  textToPlay: string,
+};
+
+const PlayButton = ({ textToPlay }: PlayButtonInterface): React.ReactNode => {
   const { play } = useContext(SettingsContext);
   return (
     <div>

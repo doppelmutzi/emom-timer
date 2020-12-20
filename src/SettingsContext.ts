@@ -20,10 +20,17 @@ export type ActionType =
   | { type: "SET_MINUTES"; minutes: number[] }
   | { type: "LOAD_TEMPLATE"; template: State };
 
+/* 
+  https://stackoverflow.com/questions/63767199/typescript-eslint-no-unused-vars-false-positive-in-type-declarations
+
+  https://stackoverflow.com/questions/55807329/why-eslint-throws-no-unused-vars-for-typescript-interface
+  */
+type PlayFunc = (text: string) => void;
+
 type Context = {
   settings: State;
   voices: SpeechSynthesisVoice[];
-  play: (text: string) => void;
+  play: PlayFunc;
   dispatch: React.Dispatch<ActionType>;
 };
 

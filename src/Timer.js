@@ -1,5 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 
+type TimerInterface = {
+  countInSec: number,
+  restInSec: number,
+  label: string,
+  onStart: () => void,
+  onNearComplete: () => void,
+  onComplete: () => void,
+  onRest: () => void,
+  playback: string, // TODO enum
+};
+
 const Timer = ({
   countInSec,
   restInSec = 0,
@@ -9,7 +20,7 @@ const Timer = ({
   onComplete,
   onRest,
   playback,
-}) => {
+}: TimerInterface): React.ReactNode => {
   const intervalRef = useRef(1000);
   const restRef = useRef(restInSec * intervalRef.current);
   const initialCountRef = useRef(countInSec * intervalRef.current);

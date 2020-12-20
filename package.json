@@ -2,13 +2,20 @@
   "name": "workout-timer",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext .js,.jsx,.ts,tsx  src/",
+    "lint:fix": "npm run lint -- --fix"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
   },
   "dependencies": {
-    "d3": "^6.2.0",
     "@material-ui/core": "^4.11.1",
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^5.11.6",
@@ -20,16 +27,18 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.6",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
+    "@welldone-software/why-did-you-render": "6.0.3",
+    "d3": "^6.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "typescript": "^4.0.1",
-    "web-vitals": "^1.0.1",
-    "@welldone-software/why-did-you-render": "6.0.3"
+    "web-vitals": "^1.0.1"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
     "eslint-config-babel": "^9.0.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
@@ -43,14 +52,6 @@
   },
   "resolutions": {
     "acorn": "^7.1.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint --ext .js,.jsx,.ts,tsx  src/",
-    "lint:fix": "npm run lint -- --fix"
   },
   "eslintConfig": {
     "extends": "react-app"

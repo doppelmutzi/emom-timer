@@ -3,7 +3,19 @@ import { Button } from "@material-ui/core";
 
 import "./Button.css";
 
-const CustomizedButton = ({ children, onClick, className, color }) => {
+type CustomizedButtonType = {
+  children: React.ReactNode,
+  onClick: (evt: React.MouseEvent) => void,
+  className: string,
+  color: string,
+};
+
+const CustomizedButton = ({
+  children,
+  onClick,
+  className,
+  color,
+}: CustomizedButtonType): React.ReactNode => {
   const additionClassName = className || "";
   return (
     <Button

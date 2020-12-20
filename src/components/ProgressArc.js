@@ -13,12 +13,19 @@ function useColorIndication(progressPercentage) {
   return colorIndicator;
 }
 
+type ProgressArcInterface = {
+  svgWidth: number,
+  arcWidth: number,
+  progressPercentage: number,
+  colorIndicator: string,
+};
+
 function ProgressArc({
   svgWidth,
   arcWidth,
   progressPercentage,
   colorIndicator,
-}) {
+}: ProgressArcInterface): React.ReactNode {
   const svgHeight = svgWidth;
   const arcOuterRadius = svgWidth / 2;
   const arcInnerRadius = svgWidth / 2 - arcWidth;
@@ -53,7 +60,7 @@ function ProgressArc({
   );
 }
 
-export function ProgressCircleWrapper() {
+export function ProgressCircleWrapper(): ReactNode {
   const svgWidth = 150;
   const arcWidth = 12;
   const [progressPercentage, setProgressPercentage] = useState(50);

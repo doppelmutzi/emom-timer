@@ -16,7 +16,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Preferences = ({ handleClose }) => {
+type PreferencesInterface = {
+  handleClose: () => void,
+};
+
+const Preferences = ({
+  handleClose,
+}: PreferencesInterface): React.ReactNode => {
   const classes = useStyles();
   return (
     <>

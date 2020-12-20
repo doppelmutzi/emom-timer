@@ -43,7 +43,9 @@ function ProgressCircleWrapper() {
   );
 }
 
-const onStartDefault = () => {};
+const onStartDefault = () => {
+  /* do nothing */
+};
 const onNearCompleteDefault = onStartDefault;
 const onRestDefault = onStartDefault;
 
