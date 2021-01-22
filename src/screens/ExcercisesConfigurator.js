@@ -34,7 +34,7 @@ function ExcercisesConfigurator() {
   };
 
   const { dispatch, settings } = useContext(SettingsContext);
-  const { timerType, emomTimeInSec, rounds, minutes, dirty } = settings;
+  const { emomTimeInSec, minutes, dirty } = settings;
   const history = useHistory();
   let query = useQuery();
   const template = query.get("template");
@@ -80,36 +80,18 @@ function ExcercisesConfigurator() {
       </Dialog>
       <TemplatesDropdown />
       <HorizontalContainer>
-        <select
-          value={timerType}
-          onChange={(evt) => {
-            const timerType = evt.target.value;
-            dispatch({ type: "SET_TIMER_TYPE", timerType });
-          }}
-        >
-          <option value="emom">EMOM</option>
-          <option value="rounds">Rounds</option>
-        </select>
-        {timerType === "emom" ? (
-          <UtteranceInput
-            value={emomTimeInSec / 60}
-            label="Overall workout time"
-            placeholder="in minutes"
-            type="number"
-            onChange={(timeInMinutes) =>
-              dispatch({
-                type: "SET_EMOM_TIME",
-                emomTimeInSec: timeInMinutes * 60,
-              })
-            }
-          />
-        ) : (
-          <UtteranceInput
-            label="Number repetitions of minutes"
-            type="number"
-            onChange={(rounds) => dispatch({ type: "SET_ROUNDS", rounds })}
-          />
-        )}
+        <UtteranceInput
+          value={emomTimeInSec / 60}
+          label="Overall workout time"
+          placeholder="in minutes"
+          type="number"
+          onChange={(timeInMinutes) =>
+            dispatch({
+              type: "SET_EMOM_TIME",
+              emomTimeInSec: timeInMinutes * 60,
+            })
+          }
+        />
       </HorizontalContainer>
       <VerticalContainer>
         <Button
@@ -220,20 +202,11 @@ function ExcercisesConfigurator() {
   );
 
   function updateState() {
-    const emom =
-      timerType === "emom"
-        ? parseInt(emomTimeInSec)
-        : parseInt(rounds) * minutes.length * 60;
-    dispatch({ type: "SET_EMOM_TIME", emomTimeInSec: emom });
+    dispatch({ type: "SET_EMOM_TIME", emomTimeInSec: parseInt(emomTimeInSec) });
   }
 
   function isDisabled() {
-    return (
-      minutes.length === 0 ||
-      (timerType === "emom" && emomTimeInSec <= 0) ||
-      (timerType !== "emom" && rounds <= 0) ||
-      dirty
-    );
+    return minutes.length === 0 || emomTimeInSec <= 0 || dirty;
   }
 
   function checkInput() {

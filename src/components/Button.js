@@ -8,6 +8,7 @@ type CustomizedButtonType = {
   onClick: (evt: React.MouseEvent) => void,
   className: string,
   color: string,
+  disabled: boolean,
 };
 
 const CustomizedButton = ({
@@ -15,6 +16,7 @@ const CustomizedButton = ({
   onClick,
   className,
   color,
+  disabled,
 }: CustomizedButtonType): React.ReactNode => {
   const additionClassName = className || "";
   return (
@@ -23,6 +25,7 @@ const CustomizedButton = ({
       color={`${color || "primary"}`}
       className={`customized-button ${additionClassName}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </Button>

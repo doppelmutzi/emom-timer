@@ -14,20 +14,10 @@ export default (state: State, action: ActionType): State => {
         ...state,
         voiceIndex: action.index,
       };
-    case "SET_TIMER_TYPE":
-      return {
-        ...state,
-        timerType: action.timerType,
-      };
     case "SET_EMOM_TIME":
       return {
         ...state,
         emomTimeInSec: action.emomTimeInSec,
-      };
-    case "SET_ROUNDS":
-      return {
-        ...state,
-        rounds: action.rounds,
       };
     case "SET_MINUTES":
       return {
@@ -53,10 +43,9 @@ export function getInitialSettings(): State {
   return {
     dirty: true,
     voiceIndex: 0,
-    timerType: "emom",
+    timerType: "emom_total_time",
     currentVoice: "de",
     emomTimeInSec: 0,
-    rounds: 0,
     minutes: [],
   };
 }

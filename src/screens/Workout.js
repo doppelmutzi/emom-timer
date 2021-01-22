@@ -75,7 +75,7 @@ const Workout = () => {
       );
       setOverallMinutes(combinedMinutes);
     }
-  }, [settings.minutes, settings.emomTimeInSec, settings]);
+  }, [settings.minutes, settings.emomTimeInSec]);
 
   const memoizedOnOverallComplete = useCallback(() => {
     play("Workout complete. Have a nice day.");
@@ -97,9 +97,9 @@ const Workout = () => {
 
   const memoizedOnComplete = useCallback(
     (index) => {
-      index < settings.minutes.length - 1 && setCurrentTimerIndex((i) => i + 1);
+      index < overallMinutes.length - 1 && setCurrentTimerIndex((i) => i + 1);
     },
-    [settings.minutes]
+    [overallMinutes]
   );
 
   const memoizedOnRest = useCallback(
@@ -114,9 +114,9 @@ const Workout = () => {
   // https://codesandbox.io/s/l4oqzp5z1q?fontsize=14&file=/src/index.js
   return (
     <Screen>
-      <ProgressCircleWrapper />
+      {/* <ProgressCircleWrapper /> */}
       <Timer
-        label="emom"
+        label="emom_total_time"
         countInSec={settings.emomTimeInSec}
         playback={playback}
         onStart={onStartDefault}
@@ -127,16 +127,16 @@ const Workout = () => {
       />
 
       {overallMinutes.map((minute, index) => {
-        const nextMinuteAvailable = index + 1 <= settings.minutes.length - 1;
+        const nextMinuteAvailable = index + 1 <= overallMinutes.length - 1;
         const labelNextMinute =
-          nextMinuteAvailable && settings.minutes[index + 1].label;
+          nextMinuteAvailable && overallMinutes[index + 1].label;
         const restInSec = minute.unit === UNIT.SECONDS ? 60 - minute.amount : 0;
 
         return (
           index === currentTimerIndex && (
             <div key={index}>
               {nextMinuteAvailable && (
-                <label>Next: {settings.minutes[index + 1].label}</label>
+                <label>Next: {overallMinutes[index + 1].label}</label>
               )}
               <Timer
                 label={`min ${index + 1}: ${minute.label}`}

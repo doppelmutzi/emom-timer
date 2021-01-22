@@ -3,10 +3,9 @@ import { createContext } from "react";
 export type State = {
   dirty: boolean;
   voiceIndex: number;
-  timerType: string;
+  timerType: string; // TODO enum
   currentVoice: string;
   emomTimeInSec: number;
-  rounds: number;
   minutes: number[];
 };
 
@@ -14,9 +13,7 @@ export type ActionType =
   | { type: "RESET" }
   | { type: "SET_DIRTY"; dirty: boolean }
   | { type: "CHANGE_VOICE"; index: number }
-  | { type: "SET_TIMER_TYPE"; timerType: string }
   | { type: "SET_EMOM_TIME"; emomTimeInSec: number }
-  | { type: "SET_ROUNDS"; rounds: number }
   | { type: "SET_MINUTES"; minutes: number[] }
   | { type: "LOAD_TEMPLATE"; template: State };
 

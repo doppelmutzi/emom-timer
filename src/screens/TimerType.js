@@ -2,7 +2,7 @@ import React from "react";
 
 import Screen from "../Screen";
 
-const TimerType = (): void => {
+const TimerType = (): JSXElement => {
   return <Screen>TimerType</Screen>;
 };
 
