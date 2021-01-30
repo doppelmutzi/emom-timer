@@ -8,10 +8,11 @@ import Button from "../components/Button";
 import Screen from "../Screen";
 import UtteranceInput from "../components/UtteranceInput";
 import SettingsContext from "../SettingsContext";
-import "./exercises.css";
 import { UNIT } from "../settingsReducer";
 import { HorizontalContainer, VerticalContainer } from "../Layout";
 import TemplatesDropdown from "../views/TemplatesDropdown";
+
+import "./exercises.css";
 
 // A custom hook that builds on useLocation to parse the query string for you.
 function useQuery() {
@@ -173,7 +174,7 @@ function ExcercisesConfigurator() {
           onClick={() => {
             updateState();
             const key = prompt("What's the name of the template?");
-            localStorage.setItem(key, JSON.stringify(settings));
+            localStorage.setItem("emom_" + key, JSON.stringify(settings));
           }}
         >
           Save timer

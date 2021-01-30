@@ -20,15 +20,17 @@ const CustomizedButton = ({
 }: CustomizedButtonType): React.ReactNode => {
   const additionClassName = className || "";
   return (
-    <Button
-      variant="contained"
-      color={`${color || "primary"}`}
-      className={`customized-button ${additionClassName}`}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {children}
-    </Button>
+    <div className="customized-button">
+      <Button
+        variant="contained"
+        color={`${color || "primary"}`}
+        className={additionClassName}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {children}
+      </Button>
+    </div>
   );
 };
 

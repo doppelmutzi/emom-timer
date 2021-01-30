@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
+
 import { HorizontalContainer } from "../Layout";
 import SettingsContext from "../SettingsContext";
+import Button from "../components/Button";
 
 const TemplatesDropdown = () => {
   const [templateKey, setTemplateKey] = useState();
@@ -8,22 +10,29 @@ const TemplatesDropdown = () => {
   const { dispatch } = useContext(SettingsContext);
 
   useEffect(() => {
-    console.log("useEffect TemplatesDropdown []");
     const tpl = new Map();
+    let index = null;
     for (let i = 0; i < localStorage.length; i++) {
-      if (i === 0) {
-        setTemplateKey(localStorage.key(i));
+      const value = localStorage.key(i);
+      if (value.startsWith("emom_")) {
+        if (index == null) {
+          index = i;
+          setTemplateKey(value.substr("emom_".length));
+        }
+        tpl.set(
+          value.substr("emom_".length),
+          localStorage.getItem(localStorage.key(i))
+        );
       }
-      tpl.set(localStorage.key(i), localStorage.getItem(localStorage.key(i)));
     }
     setTemplates(tpl);
   }, []);
-
+  if (Array.from(templates.keys()).length === 0) return null;
   return (
     <HorizontalContainer>
       <select
         value={templateKey}
-        onClick={(evt) => {
+        onChange={(evt) => {
           const key = evt.target.value;
           setTemplateKey(key);
         }}
@@ -34,7 +43,7 @@ const TemplatesDropdown = () => {
           </option>
         ))}
       </select>
-      <button
+      <Button
         onClick={() => {
           const templateStringified = templates.get(templateKey);
           dispatch({
@@ -44,7 +53,7 @@ const TemplatesDropdown = () => {
         }}
       >
         load template
-      </button>
+      </Button>
     </HorizontalContainer>
   );
 };

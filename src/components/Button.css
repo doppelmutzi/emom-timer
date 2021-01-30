@@ -1,3 +1,4 @@
-button.customized-button {
-  /* display: block; */
+.customized-button > button {
+  width: 100%;
+  max-width: 300px;
 }

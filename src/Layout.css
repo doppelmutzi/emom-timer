@@ -2,15 +2,10 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  width: 100%;
 }
 
 .l-horizontal > * + * {
   margin-left: 10px;
-}
-
-.l-vertical {
-  width: 100%;
 }
 
 .l-vertical > * + * {
