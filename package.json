@@ -51,7 +51,7 @@
     "prettier": "^2.2.0"
   },
   "resolutions": {
-    "acorn": "^7.1.1"
+    "acorn": "^8.0.0"
   },
   "eslintConfig": {
     "extends": "react-app"
