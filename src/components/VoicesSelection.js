@@ -6,7 +6,7 @@ import { VerticalContainer, HorizontalContainer } from "../Layout";
 import PlayButton from "./PlayButton";
 import { RadioGroup, RadioButton } from "./RadioButton";
 
-const VoicesSelection = (): React.ReactNode => {
+const VoicesSelection = (): JSX.Element => {
   const { settings, voices, dispatch } = useContext(SettingsContext);
   const [textToPlay, setTextToPlay] = useState("");
   return (

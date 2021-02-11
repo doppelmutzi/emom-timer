@@ -2,9 +2,8 @@ import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Box } from "@material-ui/core";
 
-import SettingsContext from "../SettingsContext";
+import SettingsContext, { MinuteType } from "../SettingsContext";
 import Timer from "../Timer";
-import { UNIT } from "../settingsReducer";
 import ProgressArc from "../components/ProgressArc";
 import Screen from "../Screen";
 
@@ -130,7 +129,8 @@ const Workout = () => {
         const nextMinuteAvailable = index + 1 <= overallMinutes.length - 1;
         const labelNextMinute =
           nextMinuteAvailable && overallMinutes[index + 1].label;
-        const restInSec = minute.unit === UNIT.SECONDS ? 60 - minute.amount : 0;
+        const restInSec =
+          minute.unit === MinuteType.SECONDS ? 60 - minute.amount : 0;
 
         return (
           index === currentTimerIndex && (
@@ -145,7 +145,9 @@ const Workout = () => {
                   memoizedOnNearComplete(nextMinuteAvailable, labelNextMinute)
                 }
                 onComplete={() => memoizedOnComplete(index)}
-                countInSec={minute.unit === UNIT.SECONDS ? minute.amount : 60}
+                countInSec={
+                  minute.unit === MinuteType.SECONDS ? minute.amount : 60
+                }
                 restInSec={restInSec}
                 onRest={() => memoizedOnRest(restInSec)}
                 playback={playback}

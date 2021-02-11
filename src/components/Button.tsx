@@ -4,11 +4,11 @@ import { Button } from "@material-ui/core";
 import "./Button.css";
 
 type CustomizedButtonType = {
-  children: React.ReactNode,
-  onClick: (evt: React.MouseEvent) => void,
-  className: string,
-  color: string,
-  disabled: boolean,
+  children: string;
+  onClick: (evt: React.MouseEvent) => void;
+  className?: string;
+  color?: "inherit" | "primary" | "secondary" | "default" | undefined;
+  disabled?: boolean;
 };
 
 const CustomizedButton = ({
@@ -17,16 +17,16 @@ const CustomizedButton = ({
   className,
   color,
   disabled,
-}: CustomizedButtonType): React.ReactNode => {
+}: CustomizedButtonType): JSX.Element => {
   const additionClassName = className || "";
   return (
     <div className="customized-button">
       <Button
         variant="contained"
-        color={`${color || "primary"}`}
+        color={color || "primary"}
         className={additionClassName}
         onClick={onClick}
-        disabled={disabled}
+        disabled={disabled || false}
       >
         {children}
       </Button>

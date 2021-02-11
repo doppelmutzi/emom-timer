@@ -6,7 +6,7 @@ type ScreenType = {
   className: string,
 };
 
-const Screen = ({ children, className }: ScreenType): React.ReactNode => {
+const Screen = ({ children, className }: ScreenType): JSX.Element => {
   return <div className={`screen ${className}`}>{children}</div>;
 };
 

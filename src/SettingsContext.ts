@@ -1,12 +1,25 @@
 import { createContext } from "react";
 
+// TODO in round umbenennen
+export enum MinuteType {
+  COUNT = 1,
+  SECONDS = 2,
+  REST = 3,
+}
+
+export type Minute = {
+  unit: MinuteType;
+  amount: number;
+  label: string;
+  valid: boolean;
+};
+
 export type State = {
   dirty: boolean;
   voiceIndex: number;
-  timerType: string; // TODO enum
   currentVoice: string;
   emomTimeInSec: number;
-  minutes: number[];
+  minutes: Minute[];
 };
 
 export type ActionType =
@@ -14,7 +27,7 @@ export type ActionType =
   | { type: "SET_DIRTY"; dirty: boolean }
   | { type: "CHANGE_VOICE"; index: number }
   | { type: "SET_EMOM_TIME"; emomTimeInSec: number }
-  | { type: "SET_MINUTES"; minutes: number[] }
+  | { type: "SET_MINUTES"; minutes: Minute[] }
   | { type: "LOAD_TEMPLATE"; template: State };
 
 /* 
@@ -24,7 +37,7 @@ export type ActionType =
   */
 type PlayFunc = (text: string) => void;
 
-type Context = {
+export type Context = {
   settings: State;
   voices: SpeechSynthesisVoice[];
   play: PlayFunc;

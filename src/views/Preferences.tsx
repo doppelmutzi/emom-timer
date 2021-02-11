@@ -17,12 +17,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type PreferencesInterface = {
-  handleClose: () => void,
+  handleClose: () => void;
 };
 
-const Preferences = ({
-  handleClose,
-}: PreferencesInterface): React.ReactNode => {
+const Preferences = ({ handleClose }: PreferencesInterface): JSX.Element => {
   const classes = useStyles();
   return (
     <>

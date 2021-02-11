@@ -5,10 +5,10 @@ import { PlayCircleOutline as PlayIcon } from "@material-ui/icons";
 import SettingsContext from "../SettingsContext";
 
 type PlayButtonInterface = {
-  textToPlay: string,
+  textToPlay: string;
 };
 
-const PlayButton = ({ textToPlay }: PlayButtonInterface): React.ReactNode => {
+const PlayButton = ({ textToPlay }: PlayButtonInterface): JSX.Element => {
   const { play } = useContext(SettingsContext);
   return (
     <div>
@@ -16,7 +16,7 @@ const PlayButton = ({ textToPlay }: PlayButtonInterface): React.ReactNode => {
         edge="start"
         color="inherit"
         onClick={() => {
-          play(textToPlay);
+          play && play(textToPlay);
         }}
         aria-label="open"
       >

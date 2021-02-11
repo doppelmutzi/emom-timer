@@ -33,17 +33,17 @@ export default (state: State, action: ActionType): State => {
   }
 };
 
-export const UNIT = {
-  COUNT: "count",
-  SECONDS: "seconds",
-  REST: "rest",
-};
+// TODO entfernen
+// export const UNIT = {
+//   COUNT: "count",
+//   SECONDS: "seconds",
+//   REST: "rest",
+// };
 
 export function getInitialSettings(): State {
   return {
     dirty: true,
     voiceIndex: 0,
-    timerType: "emom_total_time",
     currentVoice: "de",
     emomTimeInSec: 0,
     minutes: [],

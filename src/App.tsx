@@ -12,7 +12,7 @@ import WorkoutView from "./screens/Workout";
 import TimerType from "./screens/TimerType";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-function App(): React.ReactNode {
+function App(): JSX.Element {
   const synth = window.speechSynthesis;
   const utterance = useMemo(
     () => new SpeechSynthesisUtterance("Hello Basis Community"),

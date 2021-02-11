@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from "react";
 import "./input.css";
 
-const UtteranceInput = ({ onChange, type, value, label, placeholder }) => {
+type UtteranceInputInterface = {
+  onChange: (newValue: string) => void;
+  type: string;
+  value: string;
+  label: string;
+  placeholder: string;
+};
+
+const UtteranceInput = ({
+  onChange,
+  type,
+  value,
+  label,
+  placeholder,
+}: UtteranceInputInterface) => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
