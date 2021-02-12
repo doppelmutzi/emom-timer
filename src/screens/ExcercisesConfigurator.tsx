@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Dialog, Slide, IconButton } from "@material-ui/core";
 import { Settings as SettingsIcon } from "@material-ui/icons";
+import { TransitionProps } from "@material-ui/core/transitions";
 
 import PreferencesView from "../views/Preferences";
 import Button from "../components/Button";
@@ -19,10 +20,11 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
+// https://material-ui.com/components/dialogs/#AlertDialogSlide.tsx
 const Transition = React.forwardRef(function Transition(
-  props,
+  props: TransitionProps & { children?: React.ReactElement },
   ref: React.Ref<unknown>
-): JSX.Element {
+) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
