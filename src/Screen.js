@@ -3,7 +3,7 @@ import "./Screen.css";
 
 type ScreenType = {
   children: React.ReactNode,
-  className: string,
+  className?: string,
 };
 
 const Screen = ({ children, className }: ScreenType): JSX.Element => {

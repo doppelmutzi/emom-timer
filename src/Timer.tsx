@@ -1,14 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 
+export enum Playback {
+  PLAY = 1,
+  STOP = 2,
+  RESET = 3,
+}
+
 type TimerInterface = {
-  countInSec: number,
-  restInSec: number,
-  label: string,
-  onStart: () => void,
-  onNearComplete: () => void,
-  onComplete: () => void,
-  onRest: () => void,
-  playback: string, // TODO enum
+  countInSec: number;
+  restInSec: number;
+  label: string;
+  onStart: () => void;
+  onNearComplete: () => void;
+  onComplete: () => void;
+  onRest: () => void;
+  playback: Playback;
 };
 
 const Timer = ({
@@ -29,7 +35,7 @@ const Timer = ({
   const [count, setCount] = useState(initialCountRef.current);
 
   useEffect(() => {
-    if (playback === "play") {
+    if (playback === Playback.PLAY) {
       if (count === initialCountRef.current) {
         if (!isRestRef.current) onStart();
       }
@@ -51,7 +57,7 @@ const Timer = ({
         }
       }
       return () => clearInterval(id);
-    } else if (playback === "reset") {
+    } else if (playback === Playback.RESET) {
       setCount(initialCountRef.current);
     }
   }, [playback, count, onStart, onNearComplete, onRest, onComplete]);

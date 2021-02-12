@@ -6,8 +6,9 @@ import SettingsContext, { MinuteType } from "../SettingsContext";
 import Timer from "../Timer";
 import ProgressArc from "../components/ProgressArc";
 import Screen from "../Screen";
+import { Playback } from "../Timer";
 
-function useColorIndication(progressPercentage) {
+function useColorIndication(progressPercentage: number) {
   const [colorIndicator, setColorIndicator] = useState("red");
   useEffect(() => {
     progressPercentage > 50
@@ -50,7 +51,7 @@ const onRestDefault = onStartDefault;
 
 const Workout = () => {
   const { settings, play, dispatch } = useContext(SettingsContext);
-  const [playback, setPlayback] = useState();
+  const [playback, setPlayback] = useState(Playback.STOP);
   const [overallMinutes, setOverallMinutes] = useState([]);
   const [currentTimerIndex, setCurrentTimerIndex] = useState(0);
   const history = useHistory();
@@ -67,29 +68,32 @@ const Workout = () => {
       return overallMinutes;
     }
 
-    if (settings.minutes > 0 || settings.emomTimeInSec > 0) {
+    if (
+      (settings && settings.minutes.length > 0) ||
+      (settings && settings.emomTimeInSec > 0)
+    ) {
       const combinedMinutes = getOverallMinutes(
         settings.minutes,
         settings.emomTimeInSec
       );
       setOverallMinutes(combinedMinutes);
     }
-  }, [settings.minutes, settings.emomTimeInSec]);
+  }, [settings]);
 
   const memoizedOnOverallComplete = useCallback(() => {
-    play("Workout complete. Have a nice day.");
+    play && play("Workout complete. Have a nice day.");
   }, [play]);
 
   const memoizedOnStart = useCallback(
     (minute) => {
-      play(`Start ${minute.label}`);
+      play && play(`Start ${minute.label}`);
     },
     [play]
   );
 
   const memoizedOnNearComplete = useCallback(
     (nextMinuteAvailable, labelNextMinute) => {
-      nextMinuteAvailable && play(`Next up ${labelNextMinute}`);
+      nextMinuteAvailable && play && play(`Next up ${labelNextMinute}`);
     },
     [play]
   );
@@ -103,7 +107,7 @@ const Workout = () => {
 
   const memoizedOnRest = useCallback(
     (restInSec) => {
-      restInSec > 0 && play("rest");
+      restInSec > 0 && play && play("rest");
     },
     [play]
   );
@@ -116,7 +120,7 @@ const Workout = () => {
       {/* <ProgressCircleWrapper /> */}
       <Timer
         label="emom_total_time"
-        countInSec={settings.emomTimeInSec}
+        countInSec={settings ? settings.emomTimeInSec : 0}
         playback={playback}
         onStart={onStartDefault}
         onNearComplete={onNearCompleteDefault}
@@ -159,14 +163,14 @@ const Workout = () => {
       <div>
         <button
           onClick={() => {
-            setPlayback("play");
+            setPlayback(Playback.PLAY);
           }}
         >
           start
         </button>
         <button
           onClick={() => {
-            setPlayback("stop");
+            setPlayback(Playback.STOP);
           }}
         >
           stop
@@ -174,7 +178,7 @@ const Workout = () => {
         <button
           onClick={() => {
             setCurrentTimerIndex(0);
-            setPlayback("reset");
+            setPlayback(Playback.RESET);
           }}
         >
           reset
@@ -182,7 +186,7 @@ const Workout = () => {
       </div>
       <button
         onClick={() => {
-          dispatch({ type: "RESET" });
+          dispatch && dispatch({ type: "RESET" });
           history.push("/");
         }}
       >
