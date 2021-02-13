@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Box } from "@material-ui/core";
 
-import SettingsContext, { MinuteType } from "../SettingsContext";
+import SettingsContext, { MinuteType, Minute } from "../SettingsContext";
 import Timer from "../Timer";
 import ProgressArc from "../components/ProgressArc";
 import Screen from "../Screen";
@@ -52,16 +52,18 @@ const onRestDefault = onStartDefault;
 const Workout = () => {
   const { settings, play, dispatch } = useContext(SettingsContext);
   const [playback, setPlayback] = useState(Playback.STOP);
-  const [overallMinutes, setOverallMinutes] = useState([]);
+  const [overallMinutes, setOverallMinutes] = useState<Minute[]>([]);
   const [currentTimerIndex, setCurrentTimerIndex] = useState(0);
   const history = useHistory();
 
   useEffect(() => {
     console.log("useEffect Workout");
-    function getOverallMinutes(minutes, emomTimeInSec) {
-      const numberRounds =
-        Math.floor(parseInt(emomTimeInSec) / 60) / minutes.length;
-      let overallMinutes = [];
+    function getOverallMinutes(
+      minutes: Minute[],
+      emomTimeInSec: number
+    ): Minute[] {
+      const numberRounds = Math.floor(emomTimeInSec / 60) / minutes.length;
+      let overallMinutes: Minute[] = [];
       for (let i = 1; i <= numberRounds; i++) {
         overallMinutes = [...overallMinutes, ...minutes];
       }
@@ -126,7 +128,6 @@ const Workout = () => {
         onNearComplete={onNearCompleteDefault}
         onComplete={memoizedOnOverallComplete}
         onRest={onRestDefault}
-        play={play}
       />
 
       {overallMinutes.map((minute, index) => {

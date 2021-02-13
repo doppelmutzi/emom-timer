@@ -8,7 +8,7 @@ export enum Playback {
 
 type TimerInterface = {
   countInSec: number;
-  restInSec: number;
+  restInSec?: number;
   label: string;
   onStart: () => void;
   onNearComplete: () => void;
@@ -26,7 +26,7 @@ const Timer = ({
   onComplete,
   onRest,
   playback,
-}: TimerInterface): React.ReactNode => {
+}: TimerInterface): JSX.Element => {
   const intervalRef = useRef(1000);
   const restRef = useRef(restInSec * intervalRef.current);
   const initialCountRef = useRef(countInSec * intervalRef.current);
