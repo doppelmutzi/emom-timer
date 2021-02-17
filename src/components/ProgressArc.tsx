@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import Slider from "@material-ui/core/Slider";
 import { Box } from "@material-ui/core";
 
-function useColorIndication(progressPercentage) {
+function useColorIndication(progressPercentage: number): string {
   const [colorIndicator, setColorIndicator] = useState("red");
   useEffect(() => {
     progressPercentage > 50
@@ -14,10 +14,10 @@ function useColorIndication(progressPercentage) {
 }
 
 type ProgressArcInterface = {
-  svgWidth: number,
-  arcWidth: number,
-  progressPercentage: number,
-  colorIndicator: string,
+  svgWidth: number;
+  arcWidth: number;
+  progressPercentage: number;
+  colorIndicator: string;
 };
 
 function ProgressArc({
@@ -35,7 +35,7 @@ function ProgressArc({
     .outerRadius(arcOuterRadius)
     .startAngle(0)
     .cornerRadius(5);
-  const progressArc = (value) =>
+  const progressArc = (value: number): d3.Arc<unknown, unknown> =>
     arcGenerator({
       endAngle: 2 * Math.PI * value,
     });
@@ -60,7 +60,7 @@ function ProgressArc({
   );
 }
 
-export function ProgressCircleWrapper(): ReactNode {
+export function ProgressCircleWrapper(): JSX.Element {
   const svgWidth = 150;
   const arcWidth = 12;
   const [progressPercentage, setProgressPercentage] = useState(50);

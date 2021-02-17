@@ -1,25 +1,28 @@
 import { createContext } from "react";
 
-// TODO in round umbenennen
-export enum MinuteType {
-  COUNT = 1,
-  SECONDS = 2,
-  REST = 3,
+export enum ActivityType {
+  ExcerciseForReps = 1,
+  ExcerciseForTime = 2,
+  Rest = 3,
 }
 
-export type Minute = {
-  unit: MinuteType;
-  amount: number;
-  label: string;
-  valid: boolean;
+// TODO custom validation möglich? timecap <= duration
+export type Activity = {
+  type: ActivityType;
+  durationInSec: number;
+  timecapInSec?: number; // durationInSec - timecapInSec = rest
+  description?: string;
+  valid: boolean; // ist das für Validierung?
 };
 
 export type State = {
   dirty: boolean;
   voiceIndex: number;
   currentVoice: string;
-  emomTimeInSec: number;
-  minutes: Minute[];
+  overallTimeInSec: number;
+  rounds: number;
+  // overall activities = activitiesOneRound * rounds
+  activitiesOneRound: Activity[];
 };
 
 export type ActionType =
@@ -27,7 +30,8 @@ export type ActionType =
   | { type: "SET_DIRTY"; dirty: boolean }
   | { type: "CHANGE_VOICE"; index: number }
   | { type: "SET_EMOM_TIME"; emomTimeInSec: number }
-  | { type: "SET_MINUTES"; minutes: Minute[] }
+  | { type: "SET_ACTIVITIES"; activities: Activity[] }
+  | { type: "SET_ROUNDS"; rounds: number }
   | { type: "LOAD_TEMPLATE"; template: State };
 
 /* 

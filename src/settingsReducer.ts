@@ -14,15 +14,21 @@ export default (state: State, action: ActionType): State => {
         ...state,
         voiceIndex: action.index,
       };
+    // TODO sparen da berchenbar aus rounds * activities (Einzelzeiten jeder activity)
     case "SET_EMOM_TIME":
       return {
         ...state,
-        emomTimeInSec: action.emomTimeInSec,
+        overallTimeInSec: action.emomTimeInSec,
       };
-    case "SET_MINUTES":
+    case "SET_ACTIVITIES":
       return {
         ...state,
-        minutes: [...action.minutes],
+        activitiesOneRound: [...action.activities],
+      };
+    case "SET_ROUNDS":
+      return {
+        ...state,
+        rounds: action.rounds,
       };
     case "LOAD_TEMPLATE":
       return {
@@ -33,19 +39,13 @@ export default (state: State, action: ActionType): State => {
   }
 };
 
-// TODO entfernen
-// export const UNIT = {
-//   COUNT: "count",
-//   SECONDS: "seconds",
-//   REST: "rest",
-// };
-
 export function getInitialSettings(): State {
   return {
     dirty: true,
     voiceIndex: 0,
     currentVoice: "de",
-    emomTimeInSec: 0,
-    minutes: [],
+    overallTimeInSec: 60,
+    rounds: 1,
+    activitiesOneRound: [],
   };
 }

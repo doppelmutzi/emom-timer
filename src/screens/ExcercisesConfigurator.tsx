@@ -9,7 +9,7 @@ import Button from "../components/Button";
 import Label from "../components/Label";
 import Screen from "../Screen";
 import UtteranceInput from "../components/UtteranceInput";
-import SettingsContext, { MinuteType, Minute } from "../SettingsContext";
+import SettingsContext, { ActivityType, Activity } from "../SettingsContext";
 import { HorizontalContainer, VerticalContainer } from "../Layout";
 import TemplatesDropdown from "../views/TemplatesDropdown";
 
@@ -40,8 +40,11 @@ function ExcercisesConfigurator(): JSX.Element {
   };
 
   const { dispatch, settings } = useContext(SettingsContext);
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { emomTimeInSec, minutes, dirty } = settings!;
+  const {
+    activitiesOneRound: activities,
+    dirty,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  } = settings!;
   const history = useHistory();
   const query = useQuery();
   const template = query.get("template");
@@ -54,8 +57,6 @@ function ExcercisesConfigurator(): JSX.Element {
       try {
         const json = JSON.parse(templateStringified);
         dispatch &&
-          dispatch &&
-          dispatch &&
           dispatch({
             type: "LOAD_TEMPLATE",
             template: json,
@@ -89,59 +90,15 @@ function ExcercisesConfigurator(): JSX.Element {
         <PreferencesView handleClose={handleClose} />
       </Dialog>
       <TemplatesDropdown />
-      <VerticalContainer>
-        <Label text="Duration of 1 exercise" level={3} />
-        <HorizontalContainer>
-          <UtteranceInput
-            onChange={() => {
-              /* todo */
-            }}
-            value={Math.floor(emomTimeInSec / 60).toString()}
-            label="minutes"
-            placeholder="1"
-            type="number"
-          />
-        </HorizontalContainer>
-        <HorizontalContainer>
-          <UtteranceInput
-            onChange={() => {
-              /* todo */
-            }}
-            value={(emomTimeInSec % 60).toString()}
-            label="seconds"
-            placeholder="0"
-            type="number"
-          />
-        </HorizontalContainer>
-      </VerticalContainer>
-      <HorizontalContainer>
-        <UtteranceInput
-          value={(emomTimeInSec / 60).toString()}
-          label="Overall workout time"
-          placeholder="in minutes"
-          type="number"
-          onChange={(timeInMinutes) =>
-            dispatch &&
-            dispatch &&
-            dispatch({
-              type: "SET_EMOM_TIME",
-              emomTimeInSec: parseInt(timeInMinutes) * 60,
-            })
-          }
-        />
-      </HorizontalContainer>
+
       <VerticalContainer>
         <Button
           onClick={() => {
-            dispatch &&
-              dispatch &&
-              dispatch({ type: "SET_DIRTY", dirty: true });
-            // TODO amount berechnen
-            addMinute({
-              label: "",
-              unit: MinuteType.COUNT,
+            dispatch && dispatch({ type: "SET_DIRTY", dirty: true });
+            addActivity({
+              type: ActivityType.ExcerciseForReps,
               valid: false,
-              amount: 60,
+              durationInSec: 60,
             });
           }}
         >
@@ -149,14 +106,11 @@ function ExcercisesConfigurator(): JSX.Element {
         </Button>
         <Button
           onClick={() => {
-            dispatch &&
-              dispatch &&
-              dispatch({ type: "SET_DIRTY", dirty: true });
-            addMinute({
-              label: "",
-              unit: MinuteType.SECONDS,
+            dispatch && dispatch({ type: "SET_DIRTY", dirty: true });
+            addActivity({
+              type: ActivityType.ExcerciseForTime,
               valid: false,
-              amount: 30,
+              durationInSec: 30,
             });
           }}
         >
@@ -164,62 +118,90 @@ function ExcercisesConfigurator(): JSX.Element {
         </Button>
         <Button
           onClick={() => {
-            addMinute({
-              label: "rest",
-              unit: MinuteType.REST,
-              valid: false,
-              amount: 60,
+            addActivity({
+              description: "rest",
+              type: ActivityType.Rest,
+              valid: true,
+              durationInSec: 60,
             });
           }}
         >
           add rest
         </Button>
       </VerticalContainer>
-      {minutes.map((minute, i) => {
+      {activities.map((activity, i) => {
         return (
           <div key={i} className="exercise-set l-horizontal">
-            <Label text={`round ${i + 1}:`} level={3} />
-            {minute.unit === MinuteType.REST ? (
+            <Label text={`activity ${i + 1}:`} level={4} />
+            {activity.type === ActivityType.Rest ? (
               <UtteranceInput
-                label={`rest (${i + 1})`}
-                value={minute.amount.toString()}
+                label="rest"
+                value={activity.durationInSec.toString()}
                 placeholder="in seconds"
-                type="text"
-                onChange={() => {
-                  // TODO
+                type="number"
+                onChange={(restInSec) => {
+                  const rest = parseInt(restInSec);
+                  if (typeof rest === "number" && rest > 0) {
+                    activity.durationInSec = rest;
+                    activity.valid = true;
+                  } else {
+                    activity.valid = false;
+                  }
+                  checkInput();
                 }}
               />
             ) : (
               <>
                 <UtteranceInput
-                  label="exercise description"
-                  value={minute.label}
+                  label="excercise"
+                  value={activity.description || ""}
                   type="text"
                   placeholder={
-                    minute.unit === MinuteType.SECONDS
+                    activity.type === ActivityType.ExcerciseForTime
                       ? "10 burpees"
                       : "burpees"
                   }
-                  onChange={(label) => {
-                    if (label !== "") {
-                      minute.label = label;
-                      minute.valid = true;
-                      checkInput();
+                  onChange={(description) => {
+                    if (description !== "") {
+                      activity.description = description;
+                      activity.valid = true;
+                    } else {
+                      activity.valid = false;
                     }
+                    checkInput();
                   }}
                 />
-                {minute.unit === MinuteType.SECONDS && (
+                <UtteranceInput
+                  label="duration"
+                  value={activity.durationInSec.toString()}
+                  placeholder="in seconds"
+                  type="number"
+                  onChange={(durationInSec) => {
+                    const duration = parseInt(durationInSec);
+                    if (typeof duration === "number" && duration > 0) {
+                      activity.durationInSec = duration;
+                      activity.valid = true;
+                    } else {
+                      activity.valid = false;
+                    }
+                    checkInput();
+                  }}
+                />
+                {activity.type === ActivityType.ExcerciseForTime && (
                   <UtteranceInput
-                    label="work"
-                    value={minute.amount.toString()}
+                    label="time cap"
+                    value={activity.durationInSec.toString()}
                     placeholder="in seconds"
                     type="number"
-                    onChange={(amount) => {
-                      if (parseInt(amount) > 0) {
-                        minute.amount = parseInt(amount);
-                        minute.valid = true;
-                        checkInput();
+                    onChange={(timecapInSec) => {
+                      const timecap = parseInt(timecapInSec);
+                      if (typeof timecap === "number" && timecap > 0) {
+                        activity.timecapInSec = timecap;
+                        activity.valid = true;
+                      } else {
+                        activity.valid = false;
                       }
+                      checkInput();
                     }}
                   />
                 )}
@@ -229,6 +211,9 @@ function ExcercisesConfigurator(): JSX.Element {
         );
       })}
       <HorizontalContainer>
+        {/* 
+        
+        TODO nach step 2 verschieben
         <Button
           color="secondary"
           disabled={isDisabled()}
@@ -249,7 +234,7 @@ function ExcercisesConfigurator(): JSX.Element {
           }}
         >
           share
-        </Button>
+        </Button> */}
         <Button
           disabled={isDisabled()}
           onClick={() => {
@@ -264,28 +249,28 @@ function ExcercisesConfigurator(): JSX.Element {
   );
 
   function updateState() {
-    dispatch &&
-      dispatch({
-        type: "SET_EMOM_TIME",
-        emomTimeInSec,
-      });
+    // TODO
   }
 
   function isDisabled() {
-    return minutes.length === 0 || emomTimeInSec <= 0 || dirty;
+    return activities.length === 0 || dirty;
   }
 
   function checkInput() {
-    const invalid = minutes.filter((minute) => minute.valid === false);
-    if (invalid.length > 0)
+    const invalid = activities.filter((activity) => activity.valid === false);
+    if (invalid.length > 0) {
       dispatch && dispatch({ type: "SET_DIRTY", dirty: true });
-    else dispatch && dispatch({ type: "SET_DIRTY", dirty: false });
+    } else {
+      dispatch && dispatch({ type: "SET_DIRTY", dirty: false });
+    }
   }
 
-  // TODO rename add round?!
-  function addMinute(minute: Minute) {
+  function addActivity(activity: Activity) {
     dispatch &&
-      dispatch({ type: "SET_MINUTES", minutes: [...minutes, minute] });
+      dispatch({
+        type: "SET_ACTIVITIES",
+        activities: [...activities, activity],
+      });
   }
 }
 
