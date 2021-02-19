@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { memo, useState, useEffect } from "react";
 import * as d3 from "d3";
 import Slider from "@material-ui/core/Slider";
 import { Box } from "@material-ui/core";
@@ -101,4 +101,4 @@ export function ProgressCircleWrapper(): JSX.Element {
 
 ProgressArc.whyDidYouRender = true;
 
-export default React.memo(ProgressArc);
+export default memo(ProgressArc);

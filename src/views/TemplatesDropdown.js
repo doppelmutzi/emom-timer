@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { memo, useEffect, useState, useContext } from "react";
 
 import { HorizontalContainer } from "../Layout";
 import SettingsContext from "../SettingsContext";
@@ -58,4 +58,4 @@ const TemplatesDropdown = () => {
   );
 };
 
-export default React.memo(TemplatesDropdown);
+export default memo(TemplatesDropdown);

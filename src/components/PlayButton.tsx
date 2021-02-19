@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { memo, useContext } from "react";
 import { IconButton } from "@material-ui/core";
 import { PlayCircleOutline as PlayIcon } from "@material-ui/icons";
 
@@ -26,4 +26,4 @@ const PlayButton = ({ textToPlay }: PlayButtonInterface): JSX.Element => {
   );
 };
 
-export default React.memo(PlayButton);
+export default memo(PlayButton);

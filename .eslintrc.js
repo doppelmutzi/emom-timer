@@ -16,6 +16,9 @@ module.exports = {
     "react/prop-types": "off",
     "@typescript-eslint/no-unused-vars": 0,
     "no-unused-vars": 0,
+    // import React from "react" no more required for jsx in React 17
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {

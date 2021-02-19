@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { forwardRef, memo, useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Dialog, Slide, IconButton } from "@material-ui/core";
 import { Settings as SettingsIcon } from "@material-ui/icons";
@@ -21,7 +21,7 @@ function useQuery() {
 }
 
 // https://material-ui.com/components/dialogs/#AlertDialogSlide.tsx
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement },
   ref: React.Ref<unknown>
 ) {
@@ -239,10 +239,10 @@ function ExcercisesConfigurator(): JSX.Element {
           disabled={isDisabled()}
           onClick={() => {
             updateState();
-            history.push("/workout");
+            history.push("/edit-workout");
           }}
         >
-          Go to workout
+          {"->"}
         </Button>
       </HorizontalContainer>
     </Screen>
@@ -274,4 +274,4 @@ function ExcercisesConfigurator(): JSX.Element {
   }
 }
 
-export default React.memo(ExcercisesConfigurator);
+export default memo(ExcercisesConfigurator);

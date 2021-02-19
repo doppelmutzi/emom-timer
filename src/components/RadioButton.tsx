@@ -1,4 +1,4 @@
-import React from "react";
+import { memo, ReactNode } from "react";
 
 import "./RadioButton.css";
 
@@ -9,7 +9,7 @@ type RadioButtonInterface = {
   checked?: boolean;
 };
 
-export const RadioButton = React.memo(
+export const RadioButton = memo(
   ({
     label,
     icon,
@@ -33,10 +33,10 @@ export const RadioButton = React.memo(
 );
 
 type RadioGroupInterface = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
-export const RadioGroup = React.memo(
+export const RadioGroup = memo(
   ({ children }: RadioGroupInterface): JSX.Element => (
     <div className="radio-group">{children}</div>
   )

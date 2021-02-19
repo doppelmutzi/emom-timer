@@ -1,4 +1,3 @@
-import React from "react";
 import { useHistory } from "react-router-dom";
 
 import Button from "../components/Button";
@@ -10,7 +9,7 @@ const TimerType = (): JSXElement => {
     <Screen>
       <Button
         onClick={() => {
-          history.push("/edit");
+          history.push("/edit-exercises");
         }}
       >
         EMOM

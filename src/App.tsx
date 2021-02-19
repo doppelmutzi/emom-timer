@@ -1,13 +1,8 @@
-import React, {
-  useReducer,
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import { useReducer, useEffect, useState, useCallback, useMemo } from "react";
 import SettingsContext from "./SettingsContext";
 import settingsReducer, { getInitialSettings } from "./settingsReducer";
 import ExcercisesConfigurator from "./screens/ExcercisesConfigurator";
+import WorkoutConfigurator from "./screens/WorkoutConfigurator";
 import WorkoutView from "./screens/Workout";
 import TimerType from "./screens/TimerType";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -62,8 +57,11 @@ function App(): JSX.Element {
           <Route exact path="/">
             <TimerType />
           </Route>
-          <Route exact path="/edit">
+          <Route exact path="/edit-exercises">
             <ExcercisesConfigurator />
+          </Route>
+          <Route exact path="/edit-workout">
+            <WorkoutConfigurator />
           </Route>
           <Route path="/workout">
             <WorkoutView />

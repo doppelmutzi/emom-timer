@@ -1,15 +1,15 @@
-import React from "react";
+import { memo } from "react";
 import "./Layout.css";
 
 type Container = { children: React.ReactNode };
 
-export const HorizontalContainer = React.memo(
+export const HorizontalContainer = memo(
   ({ children }: Container): JSX.Element => {
     return <div className="l-horizontal">{children}</div>;
   }
 );
 
-export const VerticalContainer = React.memo(
+export const VerticalContainer = memo(
   ({ children }: Container): JSX.Element => {
     return <div className="l-vertical">{children}</div>;
   }

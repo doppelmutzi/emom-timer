@@ -1,4 +1,4 @@
-import React from "react";
+import { createElement } from "react";
 
 type LabelType = {
   text: string;
@@ -6,6 +6,6 @@ type LabelType = {
 };
 
 const Label = ({ text, level }: LabelType): JSX.Element =>
-  React.createElement(`h${level}`, null, text);
+  createElement(`h${level}`, null, text);
 
 export default Label;

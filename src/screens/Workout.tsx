@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
+import { memo, useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Box } from "@material-ui/core";
 
@@ -201,4 +201,4 @@ const Workout = () => {
   );
 };
 
-export default React.memo(Workout);
+export default memo(Workout);

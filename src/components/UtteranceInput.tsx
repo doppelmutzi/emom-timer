@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { memo, useState, useEffect } from "react";
 import "./input.css";
 
 type UtteranceInputInterface = {
@@ -44,4 +44,4 @@ const UtteranceInput = ({
 
 UtteranceInput.whyDidYouRender = true;
 
-export default React.memo(UtteranceInput);
+export default memo(UtteranceInput);
